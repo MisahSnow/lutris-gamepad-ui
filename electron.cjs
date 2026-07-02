@@ -1,3 +1,5 @@
+const path = require("node:path");
+
 const { app, Menu, protocol } = require("electron");
 
 const { getAppConfig } = require("./src_backend/config_manager.cjs");
@@ -91,6 +93,8 @@ app.commandLine.appendSwitch("disable-infobars");
 if (!forceWindowed && !isDev) {
   Menu.setApplicationMenu(null);
 }
+
+app.setPath("userData", path.join(app.getPath("cache"), "lutris-gamepad-ui.d"));
 
 app
   .whenReady()

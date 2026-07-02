@@ -3,31 +3,80 @@ const path = require("node:path");
 
 const { app } = require("electron");
 
-function getAppHomeDir() {
-  const result = path.join(app.getPath("home"), ".local", "lutris-gamepad-ui");
-  fs.mkdirSync(result, { recursive: true });
-  return result;
+function getLegacyStorageDirectory() {
+  return path.join(app.getPath("home"), ".local", "lutris-gamepad-ui");
 }
 
-module.exports = {
-  getThemeFilePath: () => {
-    return path.join(getAppHomeDir(), "theme.json");
-  },
+function getModernStorageDirectory() {
+  return path.join(app.getPath("appData"), "lutris-gamepad-ui.d");
+}
 
-  getDefaultThemeFilePath: () => {
-    return path.join(getAppHomeDir(), "theme.default.json");
-  },
+function migrateLegacyDirectory(modernDirectory, legacyDirectory) {
+  if (fs.existsSync(modernDirectory) || !fs.existsSync(legacyDirectory)) {
+    return;
+  }
 
-  getLogFilePath: () => {
-    return path.join(getAppHomeDir(), "logs.txt");
-  },
+  const tmpModernDirectory = path.join(
+    path.dirname(modernDirectory),
+    path.basename(modernDirectory) + "_migration_" + Date.now(),
+  );
 
-  getKvStorageFilePath: () => {
-    return path.join(getAppHomeDir(), "config.json");
-  },
+  const legacyDirectoryFiles = fs.readdirSync(legacyDirectory);
 
-  generateBugReportFilePath: () => {
-    const filename = `bugreport-${new Date().toISOString()}.tar`;
-    return path.join(getAppHomeDir(), filename);
-  },
-};
+  fs.mkdirSync(tmpModernDirectory, { recursive: true });
+
+  for (const filename of legacyDirectoryFiles) {
+    const src = path.join(legacyDirectory, filename);
+    const dst = path.join(tmpModernDirectory, filename);
+
+    if (!fs.statSync(src).isFile()) {
+      continue;
+    }
+
+    fs.copyFileSync(src, dst);
+  }
+
+  fs.renameSync(tmpModernDirectory, modernDirectory);
+  fs.rmdirSync(legacyDirectory, { force: true, recursive: true });
+}
+
+function migrateAndGetHomeDirectory() {
+  const modernDirectory = getModernStorageDirectory();
+  const legacyDirectory = getLegacyStorageDirectory();
+
+  migrateLegacyDirectory(modernDirectory, legacyDirectory);
+
+  return modernDirectory;
+}
+
+function getStorageModule() {
+  const storageHomeDirectory = migrateAndGetHomeDirectory();
+  fs.mkdirSync(storageHomeDirectory, { recursive: true });
+
+  const module = {
+    getThemeFilePath: () => {
+      return path.join(storageHomeDirectory, "theme.json");
+    },
+
+    getDefaultThemeFilePath: () => {
+      return path.join(storageHomeDirectory, "theme.default.json");
+    },
+
+    getLogFilePath: () => {
+      return path.join(storageHomeDirectory, "logs.txt");
+    },
+
+    getKvStorageFilePath: () => {
+      return path.join(storageHomeDirectory, "config.json");
+    },
+
+    generateBugReportFilePath: () => {
+      const filename = `bugreport-${new Date().toISOString()}.tar`;
+      return path.join(storageHomeDirectory, filename);
+    },
+  };
+
+  return module;
+}
+
+module.exports = getStorageModule();

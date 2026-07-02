@@ -39,7 +39,8 @@ module.exports = {
   linux: {
     target: "AppImage",
     category: "Game",
-    synopsis: "A simple, TV-friendly, gamepad-navigable frontend for the Lutris game launcher on Linux.",
+    synopsis:
+      "A simple, TV-friendly, gamepad-navigable frontend for the Lutris game launcher on Linux.",
     icon: "src_frontend/resources/icon.svg",
   },
 };
