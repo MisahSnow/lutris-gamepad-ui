@@ -42,7 +42,6 @@ function migrateLegacyDirectory(modernDirectory, legacyDirectory) {
 
 function deleteLegacyJunkChromiumSessionFiles() {
   const dir = path.join(app.getPath("appData"), "lutris-gamepad-ui");
-  console.log(dir);
 
   if (!fs.existsSync(dir)) {
     return;
