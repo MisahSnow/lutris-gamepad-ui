@@ -18,26 +18,16 @@ const {
 } = require("./src_backend/utils.cjs");
 const { createWindow } = require("./src_backend/window_manager.cjs");
 
-process.on("unhandledRejection", (reason, promise) => {
-  logError("Caught a global rejection:", reason, promise);
-});
-
-protocol.registerSchemesAsPrivileged([
-  {
-    scheme: "app",
-    privileges: {
-      standard: true,
-      secure: true,
-      supportFetchAPI: true,
-      corsEnabled: true,
-    },
-  },
-]);
+app.setPath("userData", path.join(app.getPath("cache"), "lutris-gamepad-ui.d"));
 
 if (!app.requestSingleInstanceLock()) {
   app.quit();
   return;
 }
+
+process.on("unhandledRejection", (reason, promise) => {
+  logError("Caught a global rejection:", reason, promise);
+});
 
 app.on("second-instance", () => {
   const mainWindow = getMainWindow();
@@ -56,6 +46,18 @@ app.on("window-all-closed", () => {
   }
   app.quit();
 });
+
+protocol.registerSchemesAsPrivileged([
+  {
+    scheme: "app",
+    privileges: {
+      standard: true,
+      secure: true,
+      supportFetchAPI: true,
+      corsEnabled: true,
+    },
+  },
+]);
 
 // required flags
 app.commandLine.appendSwitch("disable-background-timer-throttling");
@@ -93,8 +95,6 @@ app.commandLine.appendSwitch("disable-infobars");
 if (!forceWindowed && !isDev) {
   Menu.setApplicationMenu(null);
 }
-
-app.setPath("userData", path.join(app.getPath("cache"), "lutris-gamepad-ui.d"));
 
 app
   .whenReady()
