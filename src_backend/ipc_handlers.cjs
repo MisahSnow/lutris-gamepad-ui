@@ -37,6 +37,11 @@ const {
   addLutrisGame,
   getLutrisRunners,
 } = require("./lutris_wrapper.cjs");
+const {
+  listRunningUserApps,
+  focusRunningUserApp,
+  closeRunningUserApp,
+} = require("./running_apps_manager.cjs");
 const { serializeGamepads } = require("./sdl_gamepad_serialize.cjs");
 const { mapSdlGamepadsToWebApi, pollGamepads } = require("./sdl_manager.cjs");
 const { getMainWindow } = require("./state.cjs");
@@ -103,6 +108,18 @@ function registerIpcHandlers() {
   });
 
   ipcOnWithError("close-game", async () => closeRunningGameProcess());
+
+  ipcHandleWithError("list-running-user-apps", async () => {
+    return await listRunningUserApps();
+  });
+
+  ipcHandleWithError("close-running-user-app", async (_event, pid, address) => {
+    await closeRunningUserApp(pid, address);
+  });
+
+  ipcHandleWithError("focus-running-user-app", async (_event, pid, address) => {
+    await focusRunningUserApp(pid, address);
+  });
 
   ipcOnWithError("open-lutris", async () => {
     invokeLutris().catch((error) => {

@@ -45,6 +45,7 @@
     "Select": "انتخاب"
   },
   "components/ControlsOverlay.jsx": {
+    "Apps": "Apps",
     "Clear Search": "پاک‌کردن جستجو",
     "Force close": "بستن اجباری",
     "Launch Game": "راه‌اندازی بازی",
@@ -158,6 +159,16 @@
     "Select": "انتخاب",
     "Space": "فاصله",
     "Submit": "تائید"
+  },
+  "components/RunningAppsMenu.jsx": {
+    "Back": "Back",
+    "Close": "Close",
+    "Close requested": "Close requested",
+    "Focus": "Focus",
+    "Loading...": "Loading...",
+    "No running user apps found.": "No running user apps found.",
+    "Refresh": "Refresh",
+    "Running Apps": "Running Apps"
   },
   "components/RunningGame.jsx": {
     "Now Playing": "در حال بازی",

@@ -45,6 +45,7 @@
     "Select": "Välj"
   },
   "components/ControlsOverlay.jsx": {
+    "Apps": "Apps",
     "Clear Search": "Rensa sökning",
     "Force close": "Tvinga stängning av",
     "Launch Game": "Starta spel",
@@ -158,6 +159,16 @@
     "Select": "Välj",
     "Space": "Mellanslag",
     "Submit": "Skicka"
+  },
+  "components/RunningAppsMenu.jsx": {
+    "Back": "Back",
+    "Close": "Close",
+    "Close requested": "Close requested",
+    "Focus": "Focus",
+    "Loading...": "Loading...",
+    "No running user apps found.": "No running user apps found.",
+    "Refresh": "Refresh",
+    "Running Apps": "Running Apps"
   },
   "components/RunningGame.jsx": {
     "Now Playing": "Spelas nu",

@@ -30,6 +30,11 @@ contextBridge.exposeInMainWorld("electronAPI", {
   launchGame: (gameId) => ipcRenderer.send("launch-game", gameId),
   closeGame: (gameId) => ipcRenderer.send("close-game", gameId),
   toggleGamePause: () => ipcRenderer.send("toggle-game-pause"),
+  listRunningUserApps: () => ipcRenderer.invoke("list-running-user-apps"),
+  closeRunningUserApp: (pid, address) =>
+    ipcRenderer.invoke("close-running-user-app", pid, address),
+  focusRunningUserApp: (pid, address) =>
+    ipcRenderer.invoke("focus-running-user-app", pid, address),
 
   // Audio
   getAudioInfo: () => ipcRenderer.invoke("get-audio-info"),

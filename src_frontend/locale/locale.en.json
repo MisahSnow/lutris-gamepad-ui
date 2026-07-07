@@ -45,6 +45,7 @@
     "Select": "Select"
   },
   "components/ControlsOverlay.jsx": {
+    "Apps": "Apps",
     "Clear Search": "Clear Search",
     "Force close": "Force close",
     "Launch Game": "Launch Game",
@@ -158,6 +159,16 @@
     "Select": "Select",
     "Space": "Space",
     "Submit": "Submit"
+  },
+  "components/RunningAppsMenu.jsx": {
+    "Back": "Back",
+    "Close": "Close",
+    "Close requested": "Close requested",
+    "Focus": "Focus",
+    "Loading...": "Loading...",
+    "No running user apps found.": "No running user apps found.",
+    "Refresh": "Refresh",
+    "Running Apps": "Running Apps"
   },
   "components/RunningGame.jsx": {
     "Now Playing": "Now Playing",

@@ -3,6 +3,12 @@ import { deserializeGamepads } from "./sdl_gamepad_deserialize";
 export const getGames = () => globalThis.electronAPI.getGames();
 export const launchGame = (game) => globalThis.electronAPI.launchGame(game.id);
 export const closeGame = (game) => globalThis.electronAPI.closeGame(game.id);
+export const listRunningUserApps = () =>
+  globalThis.electronAPI.listRunningUserApps();
+export const closeRunningUserApp = (pid, address) =>
+  globalThis.electronAPI.closeRunningUserApp(pid, address);
+export const focusRunningUserApp = (pid, address) =>
+  globalThis.electronAPI.focusRunningUserApp(pid, address);
 export const openLutris = () => globalThis.electronAPI.openLutris();
 export const toggleGamePause = () => globalThis.electronAPI.toggleGamePause();
 

@@ -45,6 +45,7 @@
     "Select": "Seleziona"
   },
   "components/ControlsOverlay.jsx": {
+    "Apps": "Apps",
     "Clear Search": "Annulla ricerca",
     "Force close": "Forza chiusura di",
     "Launch Game": "Avvia gioco",
@@ -158,6 +159,16 @@
     "Select": "Seleziona",
     "Space": "Spazio",
     "Submit": "Conferma"
+  },
+  "components/RunningAppsMenu.jsx": {
+    "Back": "Back",
+    "Close": "Close",
+    "Close requested": "Close requested",
+    "Focus": "Focus",
+    "Loading...": "Loading...",
+    "No running user apps found.": "No running user apps found.",
+    "Refresh": "Refresh",
+    "Running Apps": "Running Apps"
   },
   "components/RunningGame.jsx": {
     "Now Playing": "In gioco",

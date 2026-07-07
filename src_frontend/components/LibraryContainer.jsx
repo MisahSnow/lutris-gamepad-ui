@@ -17,6 +17,7 @@ import GameCard from "./GameCard";
 import LoadingIndicator from "./LoadingIndicator";
 import LutrisSettingsMenu from "./LutrisSettingsMenu";
 import OnScreenKeyboard from "./OnScreenKeyboard";
+import RunningAppsMenu from "./RunningAppsMenu";
 import RunningGame from "./RunningGame";
 
 export const LibraryContainerFocusID = "LibraryContainer";
@@ -27,7 +28,7 @@ const LibraryContainer = () => {
   const { launchGame, closeRunningGame } = useLutrisActions();
   const { showModal } = useModalActions();
   const { isModalOpen } = useModalState();
-  const { toggleSystemMenu } = useUI();
+  const { isSystemMenuOpen, toggleSystemMenu } = useUI();
   const playActionSound = usePlayButtonActionSound();
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -220,6 +221,21 @@ const LibraryContainer = () => {
     toggleSystemMenu();
   }, [toggleSystemMenu]);
 
+  const openRunningAppsMenu = useCallback(() => {
+    showModal((hideThisModal) => <RunningAppsMenu onClose={hideThisModal} />);
+  }, [showModal]);
+
+  useGlobalShortcut([
+    {
+      key: "Select",
+      active: !isModalOpen && !isSystemMenuOpen,
+      action: useCallback(() => {
+        playActionSound();
+        openRunningAppsMenu();
+      }, [openRunningAppsMenu, playActionSound]),
+    },
+  ]);
+
   const renderItem = useCallback(
     (game, { isFocused }, { onFocus, onClick, ref }) => (
       <GameCard
@@ -266,6 +282,7 @@ const LibraryContainer = () => {
 
   const controlsOverlayProperties = {
     onOpenSystemMenu: openSystemMenu,
+    onOpenRunningAppsMenu: openRunningAppsMenu,
   };
 
   if (runningGame) {
