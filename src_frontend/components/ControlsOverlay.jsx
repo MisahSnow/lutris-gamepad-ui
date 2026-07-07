@@ -13,6 +13,7 @@ const ControlsOverlay = ({
   onShowSearchModal,
   onShowGameSettings,
   onOpenSystemMenu,
+  onOpenRunningAppsMenu,
   onToggleGamePause,
   onPrevCategory,
   onNextCategory,
@@ -84,6 +85,14 @@ const ControlsOverlay = ({
       button: "Y",
       label: t("Power"),
       onClick: onOpenSystemMenu,
+    });
+  }
+
+  if (onOpenRunningAppsMenu) {
+    legendItems.push({
+      button: "Select",
+      label: t("Apps"),
+      onClick: onOpenRunningAppsMenu,
     });
   }
 

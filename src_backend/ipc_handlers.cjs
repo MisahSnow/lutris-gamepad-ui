@@ -87,6 +87,18 @@ function registerIpcHandlers() {
 
   ipcOnWithError("close-game", async () => closeRunningGameProcess());
 
+  ipcHandleWithError("list-running-user-apps", async () => {
+    return await listRunningUserApps();
+  });
+
+  ipcHandleWithError("close-running-user-app", async (_event, pid, address) => {
+    await closeRunningUserApp(pid, address);
+  });
+
+  ipcHandleWithError("focus-running-user-app", async (_event, pid, address) => {
+    await focusRunningUserApp(pid, address);
+  });
+
   ipcOnWithError("open-lutris", async () => {
     invokeLutris().catch((error) => {
       logError("unable to open lutris", error);
