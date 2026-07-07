@@ -13,7 +13,6 @@ import { useUI } from "../stores/uiStore";
 import * as api from "../utils/ipc";
 
 import About from "./About";
-import BluetoothMenu from "./BluetoothMenu";
 import ConfirmationDialog from "./ConfirmationDialog";
 import DisplaySettings from "./DisplaySettings";
 import LegendaContainer from "./LegendaContainer";
@@ -65,11 +64,6 @@ const SystemMenu = () => {
     setIsOpen(false);
   }, [showModal, setIsOpen]);
 
-  const openBluetoothSettingsModal = useCallback(() => {
-    showModal((hideThisModal) => <BluetoothMenu onClose={hideThisModal} />);
-    setIsOpen(false);
-  }, [showModal, setIsOpen]);
-
   const openDisplaySettingsModal = useCallback(() => {
     showModal((hideThisModal) => <DisplaySettings onClose={hideThisModal} />);
     setIsOpen(false);
@@ -87,6 +81,28 @@ const SystemMenu = () => {
     });
     await fetchGames();
   }, [fetchGames, showToast, t]);
+
+  const syncLutrisAccountAction = useCallback(async () => {
+    showToast({
+      title: t("Syncing Lutris account..."),
+      type: "info",
+    });
+    void api.syncLutrisAccount().then((result) => {
+      if (result?.status === "success") {
+        showToast({
+          title: t("Lutris account synced"),
+          type: "info",
+        });
+        reloadLibraryAction();
+      } else if (result?.status === "not_connected") {
+        showToast({
+          title: t("No Lutris account connected"),
+          description: t("Sign in to Lutris.net from the Lutris app first."),
+          type: "error",
+        });
+      }
+    });
+  }, [showToast, t, reloadLibraryAction]);
 
   const openSettingsModal = useCallback(() => {
     showModal((hideThisModal) => <SettingsMenu onClose={hideThisModal} />);
@@ -130,6 +146,11 @@ const SystemMenu = () => {
           disabled: staticSettings.DISABLE_LUTRIS_SETTINGS,
         },
         {
+          label: t("Sync Lutris Account"),
+          action: syncLutrisAccountAction,
+          disabled: staticSettings.DISABLE_SYNC_ACCOUNT,
+        },
+        {
           label: t("Audio Settings"),
           action: openAudioSettingsModal,
           disabled: staticSettings.DISABLE_AUDIO_SETTINGS,
@@ -138,11 +159,6 @@ const SystemMenu = () => {
           label: t("Display Settings"),
           action: openDisplaySettingsModal,
           disabled: staticSettings.DISABLE_DISPLAY_SETTINGS,
-        },
-        {
-          label: t("Bluetooth Settings"),
-          action: openBluetoothSettingsModal,
-          disabled: staticSettings.DISABLE_BLUETOOTH_SETTINGS,
         },
         {
           label: t("Open Lutris"),
@@ -166,6 +182,16 @@ const SystemMenu = () => {
           disabled: staticSettings.DISABLE_POWER_OFF_SYSTEM,
         },
         {
+          label: t("Suspend System"),
+          action: () => api.suspendPC(),
+          doubleConfirm: settings.doubleConfirmPowerManagement,
+          firstConfirm: t("Are you sure you want to suspend the system?"),
+          secondConfirm: t("Continue with suspend system?"),
+          disabled:
+            settings.systemPowerSuspendMode === "none" ||
+            staticSettings.DISABLE_SUSPEND_SYSTEM,
+        },
+        {
           label: t("Generate Bug Report"),
           action: () => api.createBugReportFile(),
           firstConfirm: t(
@@ -187,33 +213,33 @@ const SystemMenu = () => {
       openAboutModal,
       openSettingsModal,
       openLutrisSettingsModal,
-      openLutrisAddGameModal,
-      openAudioSettingsModal,
-      openDisplaySettingsModal,
-      openBluetoothSettingsModal,
-      settings.doubleConfirmPowerManagement,
       staticSettings.DISABLE_LUTRIS_SETTINGS,
+      staticSettings.DISABLE_SYNC_ACCOUNT,
       staticSettings.DISABLE_AUDIO_SETTINGS,
       staticSettings.DISABLE_DISPLAY_SETTINGS,
-      staticSettings.DISABLE_BLUETOOTH_SETTINGS,
       staticSettings.DISABLE_OPEN_LUTRIS,
       staticSettings.DISABLE_REBOOT_SYSTEM,
       staticSettings.DISABLE_POWER_OFF_SYSTEM,
       staticSettings.DISABLE_BUG_REPORT,
+      staticSettings.DISABLE_SUSPEND_SYSTEM,
+      openLutrisAddGameModal,
+      syncLutrisAccountAction,
+      openAudioSettingsModal,
+      openDisplaySettingsModal,
+      settings.doubleConfirmPowerManagement,
+      settings.systemPowerSuspendMode,
     ],
   );
 
   const openConfirmation = useCallback(
-    ({ title, description }, onConfirmAction, closeOnConfirm = true) => {
+    ({ title, description }, onConfirmAction) => {
       showModal((hideThisModal) => (
         <ConfirmationDialog
           message={title}
           description={description}
           onConfirm={() => {
+            hideThisModal();
             onConfirmAction();
-            if (closeOnConfirm) {
-              hideThisModal();
-            }
           }}
           onDeny={hideThisModal}
         />
@@ -237,11 +263,7 @@ const SystemMenu = () => {
           );
         };
 
-        openConfirmation(
-          { title: item.firstConfirm },
-          secondConfirmAction,
-          false,
-        );
+        openConfirmation({ title: item.firstConfirm }, secondConfirmAction);
       } else if (item.firstConfirm) {
         openConfirmation({ title: item.firstConfirm }, item.action);
       } else {

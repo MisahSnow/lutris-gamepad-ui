@@ -1,3 +1,4 @@
+import argparse
 import os.path
 import json
 import runpy
@@ -5,6 +6,8 @@ import shutil
 import sys
 import typing
 import inspect
+import traceback
+import dataclasses
 
 lutris_bin_path = shutil.which("lutris")
 lutris_dir_path = os.path.join(os.path.dirname(lutris_bin_path), os.pardir)
@@ -25,7 +28,15 @@ from lutris.game import Game
 from lutris.runners import import_runner
 from lutris.startup import init_lutris
 from lutris.runners import get_installed as get_installed_runners
+from lutris.services import get_services
 from lutris.util.strings import slugify
+from lutris.api import read_api_key
+from lutris.services.lutris import LutrisService
+
+try:
+    from lutris.util.library_sync import LibrarySyncer
+except ImportError:
+    LibrarySyncer = None
 
 try:
     from lutris.gui.widgets.utils import get_runtime_icon_path
@@ -39,44 +50,239 @@ except ImportError:
 
 SUBCOMMAND_OUTPUT_HEADER = "lutris-subcommand-output:"
 
+IMAGE_EXTENSIONS = ("jpg", "png", "jpeg", "webp")
+
+INTERNAL_COMMAND_ARGUMENTS = (
+    "--list-games",
+    "--get-settings",
+    "--get-new-game-settings",
+    "--update-setting",
+    "--list-runners",
+    "--add-game",
+    "--sync-account",
+)
+
+
+@dataclasses.dataclass
+class GamesCategoriesData:
+    all_games_categories: dict[str | int, list[int]] = dataclasses.field(
+        default_factory=dict
+    )
+    hidden_category_id: int | None = None
+    category_id_to_name: dict[int, str] = dataclasses.field(default_factory=dict)
+
 
 def _print_subcommand_output(json_serializable: typing.Any):
     data = json.dumps(json_serializable, ensure_ascii=True)
     print("\r\n" + SUBCOMMAND_OUTPUT_HEADER + data, end="\r\n")
 
 
-def get_coverart_path_main():
-    _print_subcommand_output(settings.COVERART_PATH)
+def _has_internal_command(argv: list[str]) -> bool:
+    return any(argument in INTERNAL_COMMAND_ARGUMENTS for argument in argv)
 
 
-def get_runtime_icon_path_main(icon_name: str):
-    if get_runtime_icon_path is None:
-        sys.exit(1)
+def _build_internal_argument_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(add_help=False, allow_abbrev=False)
+    command_group = parser.add_mutually_exclusive_group(required=True)
+    command_group.add_argument("--list-games", action="store_true")
+    command_group.add_argument("--get-settings", action="store_true")
+    command_group.add_argument("--get-new-game-settings", action="store_true")
+    command_group.add_argument(
+        "--update-setting",
+        nargs=3,
+        metavar=("SECTION", "KEY", "VALUE"),
+    )
+    command_group.add_argument("--list-runners", action="store_true")
+    command_group.add_argument("--add-game", metavar="PAYLOAD_JSON")
+    command_group.add_argument("--sync-account", action="store_true")
+    parser.add_argument("--game", dest="game_identifier")
+    parser.add_argument("--runner", dest="runner_slug")
+    parser.add_argument("--type", dest="value_type")
+    return parser
 
-    icon_path = get_runtime_icon_path(icon_name)
 
-    if icon_path is not None:
-        _print_subcommand_output(icon_path)
-    else:
-        sys.exit(1)
+def get_runtime_icons_for_runners(runners: list[str]) -> dict[str, str]:
+    if not runners:
+        return {}
+
+    result = {}
+
+    for runner in runners:
+        if runner:
+            icon_path = None
+            if get_runtime_icon_path is not None:
+                icon_path = get_runtime_icon_path(runner)
+            if icon_path:
+                result[runner] = icon_path
+
+    return result
 
 
-def get_all_games_categories_main():
+def get_service_cover_path(service: str, slug: str) -> str | None:
+    if not service or not slug:
+        return None
+
+    services = get_services()
+
+    if service not in services:
+        return None
+
+    service_class = services[service]()
+
+    possible_medias = []
+
+    for service_media_class in service_class.medias.values():
+        service_media = service_media_class()
+
+        if not service_media.size:
+            continue
+
+        width, height = service_media.size
+
+        if height < width:
+            continue
+
+        tall_ratio = height / width
+        service_media_paths = service_media.get_possible_media_paths(slug)
+
+        if not service_media_paths:
+            continue
+
+        possible_medias.extend([(p, tall_ratio) for p in service_media_paths])
+
+    possible_medias.sort(key=lambda m: m[1], reverse=True)
+
+    for possible_media, _ in possible_medias:
+        if possible_media and possible_media.exists:
+            return possible_media.path
+
+    return None
+
+
+def get_local_cover_path(slug: str) -> str | None:
+    if not slug:
+        return None
+
+    for ext in IMAGE_EXTENSIONS:
+        path = os.path.join(settings.COVERART_PATH, f"{slug}.{ext}")
+        if os.path.exists(path):
+            return path
+
+    return None
+
+
+def get_game_cover_path(game: dict[str, typing.Any]) -> str | None:
+    try:
+        local_cover_path = get_local_cover_path(game.get("slug"))
+        if local_cover_path:
+            return local_cover_path
+    except:
+        traceback.print_exc()
+
+    return get_service_cover_path(game.get("service"), game.get("slug"))
+
+
+def _get_games_categories() -> GamesCategoriesData:
+    all_categories = categories.get_categories()
+
     try:
         all_games_categories = categories.get_all_games_categories()
     except AttributeError:
         all_games_categories = {}
 
-    result = {
-        "categories": categories.get_categories(),
-        "all_games_categories": all_games_categories,
+    hidden_category_id = next(
+        (c.get("id") for c in all_categories if c.get("name") == ".hidden"), None
+    )
+
+    category_id_to_name = {
+        c["id"]: c["name"]
+        for c in all_categories
+        if c.get("name") != ".hidden" and "id" in c
     }
 
-    _print_subcommand_output(result)
+    return GamesCategoriesData(
+        all_games_categories=all_games_categories,
+        hidden_category_id=hidden_category_id,
+        category_id_to_name=category_id_to_name,
+    )
+
+
+def _enrich_game_cover_path(game: dict[str, typing.Any]) -> None:
+    cover_path = get_game_cover_path(game)
+    if cover_path:
+        game["coverPath"] = cover_path
+
+
+def _enrich_game_runtime_icon(
+    game: dict[str, typing.Any], runtime_icons: dict[str, str]
+) -> None:
+    runner = game.get("runner")
+    if runner and runner in runtime_icons:
+        game["runtimeIconPath"] = runtime_icons[runner]
+
+
+def _enrich_game_categories_and_hidden(
+    game: dict[str, typing.Any], categories_data: GamesCategoriesData
+) -> None:
+    game_id = game.get("id")
+
+    category_ids = categories_data.all_games_categories.get(
+        str(game_id), categories_data.all_games_categories.get(game_id, [])
+    )
+
+    game_categories = [
+        categories_data.category_id_to_name[cid]
+        for cid in category_ids
+        if cid in categories_data.category_id_to_name
+    ]
+
+    game["categories"] = game_categories
+
+    if categories_data.hidden_category_id is not None:
+        game["hidden"] = categories_data.hidden_category_id in category_ids
+
+
+def _enrich_game_data(
+    game: dict[str, typing.Any],
+    runtime_icons: dict[str, str],
+    categories_data: GamesCategoriesData,
+) -> None:
+    try:
+        _enrich_game_cover_path(game)
+    except:
+        traceback.print_exc()
+
+    try:
+        _enrich_game_runtime_icon(game, runtime_icons)
+    except:
+        traceback.print_exc()
+
+    try:
+        _enrich_game_categories_and_hidden(game, categories_data)
+    except:
+        traceback.print_exc()
 
 
 def list_games_main():
-    _print_subcommand_output(games.get_games(filters={"installed": 1}))
+    result = games.get_games(filters={"installed": 1})
+    unique_runners = list({game.get("runner") for game in result if game.get("runner")})
+
+    try:
+        runtime_icons = get_runtime_icons_for_runners(unique_runners)
+    except:
+        traceback.print_exc()
+        runtime_icons = {}
+
+    try:
+        categories_data = _get_games_categories()
+    except:
+        traceback.print_exc()
+        categories_data = GamesCategoriesData()
+
+    for game in result:
+        _enrich_game_data(game, runtime_icons, categories_data)
+
+    _print_subcommand_output(result)
 
 
 def get_config(game_identifier=None, runner_slug=None, config_level=None):
@@ -227,9 +433,7 @@ def apply_settings_payload(config, settings_payload):
     target = getattr(config, target_attr)
 
     for section, options in settings_payload.items():
-        if section not in ["system", "runner", "game"] or not isinstance(
-            options, dict
-        ):
+        if section not in ["system", "runner", "game"] or not isinstance(options, dict):
             continue
 
         target_section = config.runner_slug if section == "runner" else section
@@ -291,6 +495,28 @@ def list_runners_main():
     _print_subcommand_output({"runners": result})
 
 
+def sync_account_main():
+    init_lutris()
+    credentials = read_api_key()
+
+    if not credentials:
+        _print_subcommand_output({"status": "not_connected"})
+        return
+
+    if LibrarySyncer is not None:
+        LibrarySyncer().sync_local_library()
+
+    service = LutrisService()
+    lutris_games = service.load()
+
+    _print_subcommand_output(
+        {
+            "status": "success",
+            "synced_count": len(lutris_games) if lutris_games else 0,
+        }
+    )
+
+
 def patch_gtk_dbus_singleton():
     """
     Prevents the Gtk.Application from registering a unique application ID
@@ -313,66 +539,45 @@ def lutris_main():
 
 
 def main():
-    if "--get-coverart-path" in sys.argv:
-        get_coverart_path_main()
+    argv = sys.argv[1:]
+    if not _has_internal_command(argv):
+        lutris_main()
+        sys.exit(0)
 
-    elif "--get-runtime-icon-path" in sys.argv:
-        get_runtime_icon_path_main(
-            sys.argv[sys.argv.index("--get-runtime-icon-path") + 1]
-        )
+    parser = _build_internal_argument_parser()
+    arguments, _ = parser.parse_known_args(argv)
 
-    elif "--get-all-games-categories" in sys.argv:
-        get_all_games_categories_main()
-
-    elif "--list-games" in sys.argv:
+    if arguments.list_games:
         list_games_main()
 
-    elif "--get-settings" in sys.argv:
-        game_identifier = None
-        runner_slug = None
-        if "--game" in sys.argv:
-            game_identifier = sys.argv[sys.argv.index("--game") + 1]
-        if "--runner" in sys.argv:
-            runner_slug = sys.argv[sys.argv.index("--runner") + 1]
-        get_settings_main(game_identifier=game_identifier, runner_slug=runner_slug)
+    elif arguments.get_settings:
+        get_settings_main(
+            game_identifier=arguments.game_identifier,
+            runner_slug=arguments.runner_slug,
+        )
 
-    elif "--get-new-game-settings" in sys.argv:
-        runner_slug = None
-        if "--runner" in sys.argv:
-            runner_slug = sys.argv[sys.argv.index("--runner") + 1]
-        get_settings_main(runner_slug=runner_slug, config_level="game")
+    elif arguments.get_new_game_settings:
+        get_settings_main(runner_slug=arguments.runner_slug, config_level="game")
 
-    elif "--update-setting" in sys.argv:
-        idx = sys.argv.index("--update-setting")
-        section = sys.argv[idx + 1]
-        key = sys.argv[idx + 2]
-        value = sys.argv[idx + 3]
-        game_identifier = None
-        runner_slug = None
-        value_type = None
-        if "--game" in sys.argv:
-            game_identifier = sys.argv[sys.argv.index("--game") + 1]
-        if "--runner" in sys.argv:
-            runner_slug = sys.argv[sys.argv.index("--runner") + 1]
-        if "--type" in sys.argv:
-            value_type = sys.argv[sys.argv.index("--type") + 1]
+    elif arguments.update_setting:
+        section, key, value = arguments.update_setting
         update_setting_main(
             section,
             key,
             value,
-            value_type=value_type,
-            game_identifier=game_identifier,
-            runner_slug=runner_slug,
+            value_type=arguments.value_type,
+            game_identifier=arguments.game_identifier,
+            runner_slug=arguments.runner_slug,
         )
 
-    elif "--list-runners" in sys.argv:
+    elif arguments.list_runners:
         list_runners_main()
 
-    elif "--add-game" in sys.argv:
-        add_game_main(sys.argv[sys.argv.index("--add-game") + 1])
+    elif arguments.add_game is not None:
+        add_game_main(arguments.add_game)
 
-    else:
-        lutris_main()
+    elif arguments.sync_account:
+        sync_account_main()
 
     sys.exit(0)
 
