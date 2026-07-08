@@ -57,18 +57,3 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
-.running-app-details {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: 0.3rem;
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  min-width: 0;
-}
-
-.running-app-command {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}

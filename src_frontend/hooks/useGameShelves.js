@@ -78,13 +78,17 @@ export const useGameShelves = (games, searchQuery) => {
     if (searchQuery) {
       return [
         {
+          id: "search",
           title: t('Results for "{{searchQuery}}"', { searchQuery }),
           games: sortGames(currentGames, settings.librarySortMode),
         },
       ];
     }
 
-    const newShelves = [];
+    const allGamesSorted = sortGames(currentGames, settings.librarySortMode);
+    const newShelves = [
+      { id: "all-games", title: t("All Games"), games: allGamesSorted },
+    ];
 
     if (settings.showRecentlyPlayed) {
       const recentlyPlayedGames = sortGames(
@@ -93,14 +97,12 @@ export const useGameShelves = (games, searchQuery) => {
       ).slice(0, 10);
       if (recentlyPlayedGames.length > 0) {
         newShelves.push({
+          id: "recently-played",
           title: t("Recently Played"),
           games: recentlyPlayedGames,
         });
       }
     }
-
-    const allGamesSorted = sortGames(currentGames, settings.librarySortMode);
-    newShelves.push({ title: t("All Games"), games: allGamesSorted });
 
     const categoriesMap = new Map();
     for (const game of currentGames) {
@@ -119,6 +121,7 @@ export const useGameShelves = (games, searchQuery) => {
     for (const categoryName of sortedCategoryNames) {
       const categoryGames = categoriesMap.get(categoryName);
       newShelves.push({
+        id: `category-${categoryName}`,
         title: categoryName.charAt(0).toUpperCase() + categoryName.slice(1),
         games: sortGames(categoryGames, settings.librarySortMode),
       });

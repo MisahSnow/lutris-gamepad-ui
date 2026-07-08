@@ -30,6 +30,46 @@
   font-weight: bold;
 }
 
+.library-tabs {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.library-tab {
+  max-width: 16rem;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: 1.1rem;
+  font-weight: bold;
+  opacity: 0.5;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.library-tab.active {
+  color: var(--text-primary);
+  font-size: 2rem;
+  opacity: 1;
+}
+
+.library-tab:focus-visible {
+  outline: 0.125rem solid var(--accent-color);
+  outline-offset: 0.25rem;
+}
+
 .empty-library-message {
   text-align: center;
   margin-top: 10vh;

@@ -30,10 +30,12 @@
     "Force close": "强制关闭",
     "Launch Game": "启动游戏",
     "Next Shelf": "Next Shelf",
+    "Next Tab": "Next Tab",
     "Options": "选项",
     "Pause Game": "暂停游戏",
     "Power": "电源",
     "Prev Shelf": "Prev Shelf",
+    "Prev Tab": "Prev Tab",
     "Resume Game": "继续游戏",
     "Search": "搜索",
     "Toggle Overlay": "切换覆盖层"
@@ -82,6 +84,7 @@
   },
   "components/LibraryContainer.jsx": {
     "Add games in Lutris and reload.": "在 Lutris 中添加游戏并重载。",
+    "All Games": "All Games",
     "Are you sure you want to close\n{{title}}?": "确定要关闭\n{{title}} 吗？",
     "Are you sure you want to pause\n{{title}}?": "确定要暂停\n{{title}} 吗？",
     "Loading library...": "正在加载库...",

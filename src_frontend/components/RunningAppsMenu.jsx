@@ -117,12 +117,6 @@ const RunningAppsMenu = ({ onClose }) => {
           )}
           <div className="running-app-content">
             <div className="running-app-name">{app.name}</div>
-            <div className="running-app-details">
-              <span>PID {app.pid}</span>
-              {app.command && (
-                <span className="running-app-command">{app.command}</span>
-              )}
-            </div>
           </div>
         </div>
       </FocusableRow>

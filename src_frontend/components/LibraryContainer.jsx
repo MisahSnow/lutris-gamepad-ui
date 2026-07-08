@@ -36,14 +36,19 @@ const LibraryContainer = () => {
   const scrollParentReference = useRef(null);
 
   const { shelves } = useGameShelves(games, searchQuery);
+  const [activeShelfIndex, setActiveShelfIndex] = useState(0);
+  const normalizedActiveShelfIndex =
+    shelves.length > 0 ? activeShelfIndex % shelves.length : 0;
+  const activeShelf = shelves[normalizedActiveShelfIndex] || null;
 
   const sections = useMemo(
-    () =>
-      shelves.map((shelf) => ({
-        title: shelf.title,
-        items: shelf.games,
-      })),
-    [shelves],
+    () => [
+      {
+        id: activeShelf?.id || "library",
+        items: activeShelf?.games || [],
+      },
+    ],
+    [activeShelf],
   );
 
   useEffect(() => {
@@ -61,6 +66,7 @@ const LibraryContainer = () => {
         label={t("Search Library")}
         initialValue={searchQuery}
         onConfirm={(query) => {
+          setActiveShelfIndex(0);
           setSearchQuery(query);
           hideThisModal();
         }}
@@ -85,6 +91,7 @@ const LibraryContainer = () => {
   );
 
   const clearSearchCallback = useCallback(() => {
+    setActiveShelfIndex(0);
     setSearchQuery("");
   }, [setSearchQuery]);
 
@@ -225,6 +232,32 @@ const LibraryContainer = () => {
     showModal((hideThisModal) => <RunningAppsMenu onClose={hideThisModal} />);
   }, [showModal]);
 
+  const navigateShelfCallback = useCallback(
+    (delta) => {
+      if (shelves.length <= 1) {
+        return;
+      }
+
+      playActionSound();
+      setActiveShelfIndex((currentIndex) => {
+        return (currentIndex + delta + shelves.length) % shelves.length;
+      });
+    },
+    [playActionSound, shelves.length],
+  );
+
+  const selectShelfCallback = useCallback(
+    (shelfIndex) => {
+      if (shelfIndex === normalizedActiveShelfIndex) {
+        return;
+      }
+
+      playActionSound();
+      setActiveShelfIndex(shelfIndex);
+    },
+    [normalizedActiveShelfIndex, playActionSound],
+  );
+
   useGlobalShortcut([
     {
       key: "Select",
@@ -250,12 +283,44 @@ const LibraryContainer = () => {
   );
 
   const renderHeader = useCallback(
-    () => (
-      <header className="library-header">
-        <h1>{searchQuery ? t("Search") : t("My Library")}</h1>
-      </header>
-    ),
-    [searchQuery, t],
+    () => {
+      if (searchQuery) {
+        return (
+          <header className="library-header">
+            <h1>{t("Search")}</h1>
+          </header>
+        );
+      }
+
+      return (
+        <header className="library-header">
+          <nav className="library-tabs" aria-label="Library categories">
+            {shelves.map((shelf, shelfIndex) => {
+              const isActive = shelfIndex === normalizedActiveShelfIndex;
+
+              return (
+                <button
+                  key={shelf.id || shelf.title}
+                  type="button"
+                  className={`library-tab ${isActive ? "active" : ""}`}
+                  aria-current={isActive ? "page" : undefined}
+                  onClick={() => selectShelfCallback(shelfIndex)}
+                >
+                  {shelf.title}
+                </button>
+              );
+            })}
+          </nav>
+        </header>
+      );
+    },
+    [
+      normalizedActiveShelfIndex,
+      searchQuery,
+      selectShelfCallback,
+      shelves,
+      t,
+    ],
   );
 
   const renderEmpty = useCallback(
@@ -306,9 +371,11 @@ const LibraryContainer = () => {
   }
 
   if (!isModalOpen) {
-    if (sections.length > 1) {
-      controlsOverlayProperties.onPrevCategory = true;
-      controlsOverlayProperties.onNextCategory = true;
+    if (shelves.length > 1) {
+      controlsOverlayProperties.onPrevCategory = () =>
+        navigateShelfCallback(-1);
+      controlsOverlayProperties.onNextCategory = () =>
+        navigateShelfCallback(1);
     }
     if (focusedGame) {
       controlsOverlayProperties.onLaunchGame = () => launchGame(focusedGame);
@@ -332,6 +399,7 @@ const LibraryContainer = () => {
         renderHeader={renderHeader}
         renderEmpty={renderEmpty}
         onAction={handleAction}
+        onSectionNavigate={navigateShelfCallback}
         onFocusChange={setFocusedGame}
         focusId={LibraryContainerFocusID}
         isActive={!runningGame && !isModalOpen}

@@ -30,10 +30,12 @@
     "Force close": "بستن اجباری",
     "Launch Game": "راه‌اندازی بازی",
     "Next Shelf": "Next Shelf",
+    "Next Tab": "Next Tab",
     "Options": "Options",
     "Pause Game": "Pause Game",
     "Power": "نیرو",
     "Prev Shelf": "Prev Shelf",
+    "Prev Tab": "Prev Tab",
     "Resume Game": "Resume Game",
     "Search": "جستجو",
     "Toggle Overlay": "تغییر نمای رویی"
@@ -82,6 +84,7 @@
   },
   "components/LibraryContainer.jsx": {
     "Add games in Lutris and reload.": "Add games in Lutris and reload.",
+    "All Games": "All Games",
     "Are you sure you want to close\n{{title}}?": "آیا مطمئنید که می‌خواهید\n{{title}} را ببندید؟",
     "Are you sure you want to pause\n{{title}}?": "Are you sure you want to pause\n{{title}}?",
     "Loading library...": "در حال بارگذاری کتابخانه...",

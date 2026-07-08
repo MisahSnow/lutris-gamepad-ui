@@ -30,10 +30,12 @@
     "Force close": "Tvinga stängning av",
     "Launch Game": "Starta spel",
     "Next Shelf": "Next Shelf",
+    "Next Tab": "Next Tab",
     "Options": "Options",
     "Pause Game": "Pause Game",
     "Power": "Ström",
     "Prev Shelf": "Prev Shelf",
+    "Prev Tab": "Prev Tab",
     "Resume Game": "Resume Game",
     "Search": "Sök",
     "Toggle Overlay": "Växla överlägg"
@@ -82,6 +84,7 @@
   },
   "components/LibraryContainer.jsx": {
     "Add games in Lutris and reload.": "Add games in Lutris and reload.",
+    "All Games": "All Games",
     "Are you sure you want to close\n{{title}}?": "Är du säker på att du vill stänga\n{{title}}?",
     "Are you sure you want to pause\n{{title}}?": "Are you sure you want to pause\n{{title}}?",
     "Loading library...": "Laddar bibliotek...",

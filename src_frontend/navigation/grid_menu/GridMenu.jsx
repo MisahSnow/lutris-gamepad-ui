@@ -63,6 +63,7 @@ const GridMenu = ({
   renderHeader,
   renderEmpty,
   onAction,
+  onSectionNavigate,
   onFocusChange,
   focusId,
   isActive = true,
@@ -108,11 +109,19 @@ const GridMenu = ({
           break;
         }
         case "L1": {
-          moveSection(-1);
+          if (onSectionNavigate) {
+            onSectionNavigate(-1);
+          } else {
+            moveSection(-1);
+          }
           break;
         }
         case "R1": {
-          moveSection(1);
+          if (onSectionNavigate) {
+            onSectionNavigate(1);
+          } else {
+            moveSection(1);
+          }
           break;
         }
         default: {
@@ -123,7 +132,7 @@ const GridMenu = ({
         }
       }
     },
-    [sections, coords, move, moveSection, onAction],
+    [sections, coords, move, moveSection, onAction, onSectionNavigate],
   );
 
   const { isFocused } = useScopedInput(inputHandler, focusId, isActive);

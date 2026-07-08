@@ -25,8 +25,8 @@ const ControlsOverlay = ({
 
   if (onPrevCategory && onNextCategory) {
     legendItems.push(
-      { button: "L1", label: t("Prev Shelf") },
-      { button: "R1", label: t("Next Shelf") },
+      { button: "L1", label: t("Prev Tab"), onClick: onPrevCategory },
+      { button: "R1", label: t("Next Tab"), onClick: onNextCategory },
     );
   }
 
