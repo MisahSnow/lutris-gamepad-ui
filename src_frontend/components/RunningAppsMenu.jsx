@@ -5,6 +5,7 @@ import { useToastActions } from "../stores/toastStore";
 import { useTranslation } from "../stores/translationStore";
 import {
   closeRunningUserApp,
+  encodeAppProtocolPath,
   focusRunningUserApp,
   listRunningUserApps,
 } from "../utils/ipc";
@@ -103,12 +104,25 @@ const RunningAppsMenu = ({ onClose }) => {
         }}
       >
         <div className="running-app-row">
-          <div className="running-app-name">{app.name}</div>
-          <div className="running-app-details">
-            <span>PID {app.pid}</span>
-            {app.command && (
-              <span className="running-app-command">{app.command}</span>
-            )}
+          {app.iconPath ? (
+            <img
+              className="running-app-icon"
+              src={encodeAppProtocolPath(app.iconPath)}
+              alt=""
+              decoding="async"
+              loading="lazy"
+            />
+          ) : (
+            <div className="running-app-icon running-app-icon-fallback" />
+          )}
+          <div className="running-app-content">
+            <div className="running-app-name">{app.name}</div>
+            <div className="running-app-details">
+              <span>PID {app.pid}</span>
+              {app.command && (
+                <span className="running-app-command">{app.command}</span>
+              )}
+            </div>
           </div>
         </div>
       </FocusableRow>

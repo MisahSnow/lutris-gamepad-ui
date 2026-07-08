@@ -31,6 +31,11 @@ const {
   syncLutrisAccount,
 } = require("./lutris_wrapper.cjs");
 const { rebootPc, powerOffPc, suspendPc } = require("./power_utils.cjs");
+const {
+  listRunningUserApps,
+  focusRunningUserApp,
+  closeRunningUserApp,
+} = require("./running_apps_manager.cjs");
 const { serializeGamepads } = require("./sdl_gamepad_serialize.cjs");
 const { mapSdlGamepadsToWebApi, pollGamepads } = require("./sdl_manager.cjs");
 const { getMainWindow } = require("./state.cjs");
