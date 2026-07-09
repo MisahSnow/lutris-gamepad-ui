@@ -14,8 +14,8 @@
   color: var(--text-primary);
   padding: 0.875rem 1.25rem;
   border-radius: 0.375rem;
-  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.5);
-  border: 0.0625rem solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0.25rem 0.75rem rgba(var(--rp-base-rgb), 0.5);
+  border: 0.0625rem solid rgba(var(--rp-text-rgb), 0.15);
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
@@ -33,7 +33,7 @@
 }
 
 .toast-item.error {
-  border-color: var(--accent-color);
+  border-color: var(--highlight-color);
 }
 
 @keyframes slideIn {
@@ -93,6 +93,6 @@
 }
 
 .toast-close-button:hover {
-  background-color: var(--accent-color);
-  color: var(--text-primary);
+  background-color: var(--highlight-color);
+  color: var(--highlight-text-color);
 }

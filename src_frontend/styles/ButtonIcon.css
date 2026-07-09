@@ -15,9 +15,9 @@
   justify-content: center;
   align-items: center;
   font-weight: bold;
-  color: #fff;
-  border: 0.125rem solid rgba(255, 255, 255, 0.2);
-  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--rp-text);
+  border: 0.125rem solid rgba(var(--rp-text-rgb), 0.2);
+  background-color: rgba(var(--rp-text-rgb), 0.1);
   box-sizing: border-box;
 }
 
@@ -34,27 +34,28 @@
 .button-keyboard-select,
 .button-keyboard-start,
 .button-keyboard-super {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.2);
-  color: #fff;
+  background-color: rgba(var(--rp-text-rgb), 0.1);
+  border-color: rgba(var(--rp-text-rgb), 0.2);
+  color: var(--rp-text);
 }
 
 .button-xbox-a {
-  background-color: #107c10;
-  border-color: #107c10;
+  background-color: var(--rp-pine);
+  border-color: var(--rp-pine);
 }
 .button-xbox-b {
-  background-color: #e50914;
-  border-color: #e50914;
+  background-color: var(--rp-love);
+  border-color: var(--rp-love);
 }
 .button-xbox-x {
-  background-color: #0078d4;
-  border-color: #0078d4;
+  background-color: var(--rp-foam);
+  border-color: var(--rp-foam);
+  color: var(--rp-base);
 }
 .button-xbox-y {
-  background-color: #ffb900;
-  border-color: #ffb900;
-  color: #141414;
+  background-color: var(--rp-gold);
+  border-color: var(--rp-gold);
+  color: var(--rp-base);
 }
 
 .button-xbox-left,
@@ -66,26 +67,28 @@
 .button-xbox-select,
 .button-xbox-start,
 .button-xbox-super {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.2);
-  color: #fff;
+  background-color: rgba(var(--rp-text-rgb), 0.1);
+  border-color: rgba(var(--rp-text-rgb), 0.2);
+  color: var(--rp-text);
 }
 
 .button-playstation-a {
-  background-color: #0070d1;
-  border-color: #0070d1;
+  background-color: var(--rp-foam);
+  border-color: var(--rp-foam);
+  color: var(--rp-base);
 }
 .button-playstation-b {
-  background-color: #e50914;
-  border-color: #e50914;
+  background-color: var(--rp-love);
+  border-color: var(--rp-love);
 }
 .button-playstation-x {
-  background-color: #b22383;
-  border-color: #b22383;
+  background-color: var(--rp-iris);
+  border-color: var(--rp-iris);
+  color: var(--rp-base);
 }
 .button-playstation-y {
-  background-color: #009374;
-  border-color: #009374;
+  background-color: var(--rp-pine);
+  border-color: var(--rp-pine);
 }
 
 .button-playstation-left,
@@ -97,9 +100,9 @@
 .button-playstation-select,
 .button-playstation-start,
 .button-playstation-super {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.2);
-  color: #fff;
+  background-color: rgba(var(--rp-text-rgb), 0.1);
+  border-color: rgba(var(--rp-text-rgb), 0.2);
+  color: var(--rp-text);
 }
 
 .button-hint.size-large {

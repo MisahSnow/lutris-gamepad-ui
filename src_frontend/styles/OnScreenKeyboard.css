@@ -13,7 +13,7 @@
   border-radius: 0.375rem;
   padding: 0.75rem 1rem;
   font-size: 1.5rem;
-  border: 0.0625rem solid rgba(255, 255, 255, 0.2);
+  border: 0.0625rem solid rgba(var(--rp-text-rgb), 0.2);
   min-height: 5rem;
   display: flex;
   flex-direction: column;
@@ -45,7 +45,7 @@
   vertical-align: text-bottom;
   width: 0.125rem;
   height: 1.5rem;
-  background-color: var(--accent-color);
+  background-color: var(--highlight-color);
   animation: blink 1s step-end infinite;
 }
 
@@ -55,7 +55,7 @@
     background-color: transparent;
   }
   50% {
-    background-color: var(--accent-color);
+    background-color: var(--highlight-color);
   }
 }
 
@@ -72,7 +72,7 @@
 }
 
 .osk-key {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(var(--rp-text-rgb), 0.1);
   color: var(--text-primary);
   border: 0.0625rem solid transparent;
   border-radius: 0.375rem;
@@ -95,7 +95,7 @@
 
 .osk-key.special {
   flex-grow: 1.5;
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(var(--rp-text-rgb), 0.15);
   font-size: 1rem;
 }
 
@@ -104,13 +104,13 @@
 }
 
 .osk-key:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(var(--rp-text-rgb), 0.2);
 }
 
 .osk-key.focused {
-  background-color: var(--accent-color);
-  color: var(--text-primary);
+  background-color: var(--highlight-color);
+  color: var(--highlight-text-color);
   transform: scale(1.08);
-  box-shadow: 0 0.3125rem 0.9375rem rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0.3125rem 0.9375rem rgba(var(--rp-base-rgb), 0.4);
   z-index: 10;
 }

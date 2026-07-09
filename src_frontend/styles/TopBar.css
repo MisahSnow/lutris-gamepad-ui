@@ -1,35 +1,89 @@
 .top-bar {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: var(--top-bar-height);
-  background-color: rgba(20, 20, 20, 0.95);
-  color: var(--text-secondary);
+  top: 1.35rem;
+  right: 4%;
+  color: var(--text-primary);
   display: flex;
   align-items: center;
-  padding: 0 1.25rem;
-  box-sizing: border-box;
   z-index: 1900;
-  border-bottom: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  pointer-events: none;
 }
 
 .top-bar-content {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  justify-content: flex-end;
+  gap: 0.45rem;
+  max-width: min(42rem, 48vw);
+  padding: 0.35rem;
+  border: 0.0625rem solid rgba(var(--rp-text-rgb), 0.1);
+  border-radius: 999rem;
+  background-color: rgba(var(--rp-surface-rgb), 0.86);
+  box-shadow: 0 0.75rem 2rem rgba(var(--rp-base-rgb), 0.35);
 }
 
-.top-bar-item {
-  font-size: 1rem;
+.top-bar-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 1.85rem;
+  padding: 0 0.7rem;
+  border-radius: 999rem;
+  background-color: rgba(var(--rp-text-rgb), 0.06);
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
 }
 
 .top-bar-time {
-  font-weight: 500;
+  background-color: rgba(var(--rp-text-rgb), 0.12);
   color: var(--text-primary);
 }
 
-.top-bar-separator {
-  color: var(--text-secondary);
-  opacity: 0.5;
+.top-bar-label {
+  color: rgba(var(--rp-text-rgb), 0.42);
+}
+
+.top-bar-value {
+  color: inherit;
+}
+
+.top-bar-status-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background-color: var(--rp-foam);
+  box-shadow: 0 0 0.5rem rgba(var(--rp-foam-rgb), 0.75);
+}
+
+.top-bar-network.offline .top-bar-status-dot {
+  background-color: var(--highlight-color);
+  box-shadow: 0 0 0.5rem rgba(var(--highlight-color-rgb), 0.75);
+}
+
+.top-bar-version {
+  padding: 0 0.55rem;
+  color: rgba(var(--rp-text-rgb), 0.38);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .top-bar {
+    left: 4%;
+    right: 4%;
+  }
+
+  .top-bar-content {
+    max-width: none;
+    overflow: hidden;
+  }
+
+  .top-bar-pill {
+    padding: 0 0.55rem;
+  }
 }

@@ -10,7 +10,7 @@
   height: 2.5rem;
   border-radius: 50%;
   border: none;
-  background-color: rgba(20, 20, 20, 0.9);
+  background-color: rgba(var(--rp-surface-rgb), 0.9);
   color: var(--text-secondary);
   cursor: pointer;
   transition:
@@ -29,25 +29,26 @@
 }
 
 .system-menu-toggle:hover {
-  background-color: var(--accent-color);
-  color: var(--text-primary);
+  background-color: var(--highlight-color);
+  color: var(--highlight-text-color);
   transform: scale(1.1);
 }
 
 .system-menu-toggle:focus {
-  outline: 0.125rem solid var(--accent-color);
+  outline: 0.125rem solid var(--highlight-color);
   outline-offset: 0.125rem;
-  background-color: rgba(229, 9, 20, 0.8);
+  background-color: rgba(var(--highlight-color-rgb), 0.8);
+  color: var(--highlight-text-color);
 }
 
 .system-menu-overlay {
   position: absolute;
   top: 3.125rem;
   right: 0;
-  background-color: rgba(28, 28, 28, 0.98);
+  background-color: rgba(var(--rp-overlay-rgb), 0.98);
   border-radius: 0.5rem;
-  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.5);
+  border: 0.0625rem solid rgba(var(--rp-text-rgb), 0.1);
+  box-shadow: 0 0.25rem 0.625rem rgba(var(--rp-base-rgb), 0.5);
   min-width: 12.5rem;
   padding-top: 0.5rem;
   animation: fadeInMenu 0.2s ease-out;
@@ -92,6 +93,6 @@
 
 .system-menu-item:hover,
 .system-menu-item.focused {
-  background-color: var(--accent-color);
-  color: var(--text-primary);
+  background-color: var(--highlight-color);
+  color: var(--highlight-text-color);
 }

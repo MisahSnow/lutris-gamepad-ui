@@ -21,9 +21,9 @@
 
 .about-row-value a:hover {
   text-decoration: underline;
-  color: #ff3b47;
+  color: var(--rp-love);
 }
 
 .focusable-row.focused .about-row-value a {
-  color: #ff5c65;
+  color: var(--rp-rose);
 }

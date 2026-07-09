@@ -4,7 +4,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: rgba(var(--rp-base-rgb), 0.85);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -24,8 +24,8 @@
 .modal-content {
   background-color: var(--secondary-background);
   border-radius: 0.5rem;
-  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0.5rem 0.9375rem rgba(0, 0, 0, 0.6);
+  border: 0.0625rem solid rgba(var(--rp-text-rgb), 0.1);
+  box-shadow: 0 0.5rem 0.9375rem rgba(var(--rp-base-rgb), 0.6);
   max-width: 90vw;
   max-height: 90vh;
   display: flex;

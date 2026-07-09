@@ -17,8 +17,8 @@
 
 .running-app-icon-fallback {
   position: relative;
-  background-color: rgba(255, 255, 255, 0.08);
-  border: 0.0625rem solid rgba(255, 255, 255, 0.16);
+  background-color: rgba(var(--rp-text-rgb), 0.08);
+  border: 0.0625rem solid rgba(var(--rp-text-rgb), 0.16);
 }
 
 .running-app-icon-fallback::before {

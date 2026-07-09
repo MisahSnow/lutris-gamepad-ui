@@ -17,7 +17,7 @@
 .game-card:focus {
   transform: scale(1.1);
   z-index: 10;
-  box-shadow: 0 0.625rem 0.9375rem rgba(0, 0, 0, 0.7);
+  box-shadow: 0 0.625rem 0.9375rem rgba(var(--rp-base-rgb), 0.7);
 }
 
 .game-card-cover {
@@ -35,8 +35,8 @@
   height: 100%;
   background: linear-gradient(
     to top,
-    rgba(0, 0, 0, 0.9) 10%,
-    rgba(0, 0, 0, 0) 70%
+    rgba(var(--rp-base-rgb), 0.9) 10%,
+    rgba(var(--rp-base-rgb), 0) 70%
   );
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -71,7 +71,7 @@
   font-size: 1rem;
   font-weight: bold;
   margin: 0 0 0.5rem 0;
-  text-shadow: 0.0625rem 0.0625rem 0.1875rem rgba(0, 0, 0, 0.8);
+  text-shadow: 0.0625rem 0.0625rem 0.1875rem rgba(var(--rp-base-rgb), 0.8);
   display: -webkit-box;
   line-height: 1.15;
   overflow: hidden;
@@ -83,22 +83,22 @@
   font-size: 0.8rem;
   margin: 0.2rem 0;
   color: var(--text-secondary);
-  text-shadow: 0.0625rem 0.0625rem 0.1875rem rgba(0, 0, 0, 0.8);
+  text-shadow: 0.0625rem 0.0625rem 0.1875rem rgba(var(--rp-base-rgb), 0.8);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .game-card:focus {
-  outline: 0.1875rem solid var(--accent-color);
+  outline: 0.1875rem solid var(--highlight-color);
   outline-offset: 0.125rem;
 }
 
 .game-card.focused {
   transform: scale(1.1);
   z-index: 10;
-  box-shadow: 0 0.625rem 0.9375rem rgba(0, 0, 0, 0.7);
-  outline: 0.1875rem solid var(--accent-color);
+  box-shadow: 0 0.625rem 0.9375rem rgba(var(--rp-base-rgb), 0.7);
+  outline: 0.1875rem solid var(--highlight-color);
   outline-offset: 0.125rem;
 }
 
@@ -118,7 +118,7 @@
   width: 1.5rem;
   height: 1.5rem;
   object-fit: contain;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(var(--rp-base-rgb), 0.6);
   border-radius: 0.25rem;
   padding: 0.125rem;
   pointer-events: none;
