@@ -2,9 +2,9 @@
   padding: 0.5rem 1rem;
   font-size: 0.9rem;
   font-weight: bold;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(var(--rp-text-rgb), 0.1);
   color: var(--text-secondary);
-  border: 0.0625rem solid rgba(255, 255, 255, 0.2);
+  border: 0.0625rem solid rgba(var(--rp-text-rgb), 0.2);
   border-radius: 0.25rem;
   cursor: pointer;
   transition:
@@ -16,7 +16,7 @@
 
 .focusable-row:hover .toggle-button,
 .focusable-row.focused .toggle-button {
-  background-color: var(--accent-color);
-  color: var(--text-primary);
-  border-color: var(--accent-color);
+  background-color: var(--highlight-color);
+  color: var(--highlight-text-color);
+  border-color: var(--highlight-color);
 }

@@ -13,7 +13,7 @@
 
 .display-settings-error-msg {
   font-size: 0.9rem;
-  color: var(--error-color, #ff4d4d);
+  color: var(--error-color, var(--rp-love));
   text-align: center;
   margin-bottom: 1rem;
   padding: 0 1rem;

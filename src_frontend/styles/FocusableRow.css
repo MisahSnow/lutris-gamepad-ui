@@ -5,7 +5,7 @@
   padding: 0.75rem 1rem;
   margin-bottom: 0.75rem;
   border-radius: 0.375rem;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(var(--rp-text-rgb), 0.05);
   border: 0.0625rem solid transparent;
   transition:
     background-color 0.2s ease,
@@ -20,8 +20,8 @@
 }
 
 .focusable-row.focused {
-  background-color: rgba(255, 255, 255, 0.15);
-  border-color: var(--accent-color);
+  background-color: rgba(var(--rp-text-rgb), 0.15);
+  border-color: var(--highlight-color);
   transform: scale(1.03);
-  box-shadow: 0 0 0.625rem rgba(229, 9, 20, 0.4);
+  box-shadow: 0 0 0.625rem rgba(var(--highlight-color-rgb), 0.4);
 }

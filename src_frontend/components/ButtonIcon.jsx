@@ -228,6 +228,7 @@ const ButtonIcon = ({ button, label, size = "large", onClick }) => {
   return (
     <div
       className={`button-hint size-${size} ${onClick ? "clickable" : ""}`}
+      data-button={buttonLower}
       onClick={onClick}
     >
       <div className={styleClass}>{content}</div>

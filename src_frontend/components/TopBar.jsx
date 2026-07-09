@@ -13,20 +13,13 @@ const AudioIndicator = () => {
 
   if (audioIsLoading) return null;
 
-  const getVolumeIcon = () => {
-    if (isMuted || volume === 0) return "🔇";
-    if (volume < 33) return "🔈";
-    if (volume < 66) return "🔉";
-    return "🔊";
-  };
-
   return (
-    <>
-      <span className="top-bar-item top-bar-separator">|</span>
-      <span className="top-bar-item top-bar-volume">
-        {getVolumeIcon()} {isMuted ? t("Muted") : `${volume}%`}
+    <span className="top-bar-pill">
+      <span className="top-bar-label">VOL</span>
+      <span className="top-bar-value">
+        {isMuted ? t("Muted") : `${volume}%`}
       </span>
-    </>
+    </span>
   );
 };
 
@@ -40,8 +33,7 @@ const TopBar = () => {
     const now = new Date();
     const hours = String(now.getHours()).padStart(2, "0");
     const minutes = String(now.getMinutes()).padStart(2, "0");
-    const seconds = String(now.getSeconds()).padStart(2, "0");
-    return `${hours}:${minutes}:${seconds}`;
+    return `${hours}:${minutes}`;
   });
 
   useEffect(() => {
@@ -49,8 +41,7 @@ const TopBar = () => {
       const now = new Date();
       const hours = String(now.getHours()).padStart(2, "0");
       const minutes = String(now.getMinutes()).padStart(2, "0");
-      const seconds = String(now.getSeconds()).padStart(2, "0");
-      setTime(`${hours}:${minutes}:${seconds}`);
+      setTime(`${hours}:${minutes}`);
     };
 
     const timerId = setInterval(updateClock, 1000);
@@ -70,7 +61,7 @@ const TopBar = () => {
   }, []);
 
   const getNetworkIndicator = () => {
-    return isOnline ? "📶" : `❌ ${t("Offline")}`;
+    return isOnline ? "Online" : t("Offline");
   };
 
   const isAudioDisabled = staticSettings.DISABLE_AUDIO_SETTINGS;
@@ -78,18 +69,25 @@ const TopBar = () => {
   return (
     <div className="top-bar">
       <div className="top-bar-content">
-        <span className="top-bar-item top-bar-time">{time}</span>
-        <span className="top-bar-item top-bar-separator">|</span>
-        <span className="top-bar-item top-bar-gamepads">
-          🎮 {gamepadCount > 0 ? gamepadCount : "N/A"}
+        <span className="top-bar-pill top-bar-time">
+          <span className="top-bar-value">{time}</span>
         </span>
-
+        <span className="top-bar-pill">
+          <span className="top-bar-label">PAD</span>
+          <span className="top-bar-value">
+            {gamepadCount > 0 ? gamepadCount : "N/A"}
+          </span>
+        </span>
         {!isAudioDisabled && <AudioIndicator />}
-
-        <span className="top-bar-item top-bar-separator">|</span>
-        <span className="top-bar-item">{getNetworkIndicator()}</span>
-        <span className="top-bar-item top-bar-separator">|</span>
-        <span className="top-bar-item">v{packageJson.version}</span>
+        <span
+          className={`top-bar-pill top-bar-network ${
+            isOnline ? "online" : "offline"
+          }`}
+        >
+          <span className="top-bar-status-dot" />
+          <span className="top-bar-value">{getNetworkIndicator()}</span>
+        </span>
+        <span className="top-bar-version">v{packageJson.version}</span>
       </div>
     </div>
   );

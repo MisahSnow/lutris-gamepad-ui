@@ -1,12 +1,12 @@
 const PALETTE = [
-  { start: "#455A64", end: "#263238" }, // Blue Grey
-  { start: "#3D524F", end: "#2A3836" }, // Dark Slate Green
-  { start: "#4E4440", end: "#332D2A" }, // Warm Charcoal
-  { start: "#394263", end: "#242A42" }, // Deep Indigo Grey
-  { start: "#594451", end: "#3D2D37" }, // Dark Mauve
-  { start: "#2E535C", end: "#1D353A" }, // Muted Sea Green
-  { start: "#424242", end: "#1F1F1F" }, // Neutral Dark Grey
-  { start: "#2A3A4A", end: "#1A242E" }, // Deep Slate Blue
+  { start: "#31748F", end: "#191724" },
+  { start: "#9CCFD8", end: "#1F1D2E" },
+  { start: "#C4A7E7", end: "#26233A" },
+  { start: "#EBBCBA", end: "#191724" },
+  { start: "#EB6F92", end: "#1F1D2E" },
+  { start: "#F6C177", end: "#26233A" },
+  { start: "#524F67", end: "#191724" },
+  { start: "#403D52", end: "#1F1D2E" },
 ];
 
 const stringToHash = (string_) => {
