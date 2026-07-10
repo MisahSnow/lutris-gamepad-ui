@@ -1,18 +1,49 @@
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(var(--rp-base-rgb), 0.85);
-  display: flex;
-  justify-content: center;
-  align-items: center;
   z-index: 3000;
-  animation: fadeInModal 0.2s ease-out;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3vh 3vw;
+  background:
+    radial-gradient(
+      circle at 50% 20%,
+      rgba(var(--rp-iris-rgb), 0.08),
+      transparent 36rem
+    ),
+    rgba(var(--rp-base-rgb), 0.9);
+  animation: modalBackdropEnter 0.18s ease-out;
 }
 
-@keyframes fadeInModal {
+.modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-width: 94vw;
+  max-height: 92vh;
+  overflow: hidden;
+  border: 0.0625rem solid var(--panel-border);
+  border-radius: var(--radius-large);
+  background:
+    linear-gradient(145deg, rgba(var(--rp-iris-rgb), 0.035), transparent 28%),
+    var(--panel-background);
+  box-shadow: var(--shadow-deep);
+  animation: modalPanelEnter 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.modal-content::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 2rem;
+  width: 5rem;
+  height: 0.15rem;
+  background: var(--highlight-color);
+}
+
+@keyframes modalBackdropEnter {
   from {
     opacity: 0;
   }
@@ -21,13 +52,13 @@
   }
 }
 
-.modal-content {
-  background-color: var(--secondary-background);
-  border-radius: 0.5rem;
-  border: 0.0625rem solid rgba(var(--rp-text-rgb), 0.1);
-  box-shadow: 0 0.5rem 0.9375rem rgba(var(--rp-base-rgb), 0.6);
-  max-width: 90vw;
-  max-height: 90vh;
-  display: flex;
-  flex-direction: column;
+@keyframes modalPanelEnter {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }

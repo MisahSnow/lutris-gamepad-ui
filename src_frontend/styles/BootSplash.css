@@ -3,10 +3,17 @@
   height: 100%;
   display: grid;
   place-items: center;
-  background: var(--primary-background);
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(var(--rp-iris-rgb), 0.11),
+      transparent 22rem
+    ),
+    var(--primary-background);
 }
 
 .boot-splash-icon {
-  width: 4rem;
-  height: 4rem;
+  width: 4.5rem;
+  height: 4.5rem;
+  filter: drop-shadow(0 1rem 2rem rgba(5, 4, 12, 0.6));
 }

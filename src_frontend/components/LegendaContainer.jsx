@@ -15,6 +15,10 @@ const LegendaContainer = React.forwardRef(
         </div>
         {legendItems.length > 0 && (
           <div className="legenda-footer">
+            <div className="legenda-identity" aria-hidden="true">
+              <span className="legenda-identity-mark" />
+              <span>COMMAND</span>
+            </div>
             <div className="legenda-items-wrapper">
               {legendItems.map((item) => (
                 <ButtonIcon

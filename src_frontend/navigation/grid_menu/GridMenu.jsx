@@ -150,45 +150,49 @@ const GridMenu = ({
     [sections],
   );
 
-  if (!hasContent && renderEmpty) {
-    return renderEmpty();
-  }
+  useEffect(() => {
+    scrollParentRef?.current?.scrollTo({ top: 0, behavior: "smooth" });
+  }, [sections, scrollParentRef]);
 
   return (
     <main ref={containerRef} className="grid-menu">
       {renderHeader && renderHeader()}
-      {sections.map((section, sectionIndex) => (
-        <section
-          key={section.id || section.title || sectionIndex}
-          ref={(element) => setSectionRef(element, sectionIndex)}
-          className="grid-menu-section"
-        >
-          {section.title && (
-            <h2 className="grid-menu-section-title">{section.title}</h2>
-          )}
-          <div
-            ref={(element) => setGridRef(element, sectionIndex)}
-            className="grid-menu-grid"
-          >
-            {section.items.map((item, itemIndex) => (
-              <GridMenuItem
-                key={getItemKey(item, itemIndex)}
-                item={item}
-                itemIndex={itemIndex}
-                sectionIndex={sectionIndex}
-                isFocused={
-                  coords.sectionIndex === sectionIndex &&
-                  coords.itemIndex === itemIndex
-                }
-                renderItem={renderItem}
-                onAction={onAction}
-                onItemFocus={handleItemFocus}
-                setItemRef={setItemRef}
-              />
-            ))}
-          </div>
-        </section>
-      ))}
+      <div ref={scrollParentRef} className="grid-menu-scroll">
+        {hasContent
+          ? sections.map((section, sectionIndex) => (
+              <section
+                key={section.id || section.title || sectionIndex}
+                ref={(element) => setSectionRef(element, sectionIndex)}
+                className="grid-menu-section"
+              >
+                {section.title && (
+                  <h2 className="grid-menu-section-title">{section.title}</h2>
+                )}
+                <div
+                  ref={(element) => setGridRef(element, sectionIndex)}
+                  className="grid-menu-grid"
+                >
+                  {section.items.map((item, itemIndex) => (
+                    <GridMenuItem
+                      key={getItemKey(item, itemIndex)}
+                      item={item}
+                      itemIndex={itemIndex}
+                      sectionIndex={sectionIndex}
+                      isFocused={
+                        coords.sectionIndex === sectionIndex &&
+                        coords.itemIndex === itemIndex
+                      }
+                      renderItem={renderItem}
+                      onAction={onAction}
+                      onItemFocus={handleItemFocus}
+                      setItemRef={setItemRef}
+                    />
+                  ))}
+                </div>
+              </section>
+            ))
+          : renderEmpty?.()}
+      </div>
     </main>
   );
 };

@@ -1,125 +1,150 @@
 .game-card {
   position: relative;
-  width: 100%;
-  aspect-ratio: 3 / 4;
-  border-radius: 0.5rem;
-  overflow: hidden;
+  min-width: 0;
   cursor: pointer;
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
-  background-color: var(--secondary-background);
+  outline: 0;
   contain: layout style;
-  scroll-margin-block: 2rem 5rem;
+  scroll-margin-block: 8rem 6rem;
+  transition:
+    transform 0.24s cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 0.2s ease;
 }
 
-.game-card:hover,
-.game-card:focus {
-  transform: scale(1.1);
-  z-index: 10;
-  box-shadow: 0 0.625rem 0.9375rem rgba(var(--rp-base-rgb), 0.7);
+.game-card-artwork {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border: 0.0625rem solid rgba(var(--rp-text-rgb), 0.09);
+  border-radius: var(--radius-medium);
+  background: var(--secondary-background);
+  box-shadow: 0 0.7rem 1.8rem rgba(5, 4, 12, 0.2);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.24s ease;
 }
 
 .game-card-cover {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
+  transition:
+    filter 0.24s ease,
+    transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .game-card-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: 0.9rem;
+  opacity: 0;
   background: linear-gradient(
     to top,
-    rgba(var(--rp-base-rgb), 0.9) 10%,
-    rgba(var(--rp-base-rgb), 0) 70%
+    rgba(var(--rp-base-rgb), 0.88),
+    transparent 48%
   );
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+  transition: opacity 0.2s ease;
 }
 
-.game-card:hover .game-card-overlay,
-.game-card:focus .game-card-overlay {
-  opacity: 1;
+.game-card-action {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.65rem;
+  padding: 0 0.55rem;
+  background: var(--highlight-color);
+  color: var(--highlight-text-color);
+  font-size: 0.62rem;
+  font-weight: 850;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transform: translateY(0.4rem);
+  transition: transform 0.2s ease;
 }
 
 .game-card-info {
-  padding: 1rem;
-  color: var(--text-primary);
-  transform: translateY(1.25rem);
-  transition: transform 0.3s ease;
-}
-
-.game-card[data-has-runner-icon="true"] .game-card-info {
-  padding-right: 2.75rem;
-}
-
-.game-card:hover .game-card-info,
-.game-card:focus-within .game-card-info,
-.game-card:focus .game-card-info {
-  transform: translateY(0);
+  min-width: 0;
+  padding: 0.78rem 0.25rem 0;
 }
 
 .game-card-title {
-  font-size: 1rem;
-  font-weight: bold;
-  margin: 0 0 0.5rem 0;
-  text-shadow: 0.0625rem 0.0625rem 0.1875rem rgba(var(--rp-base-rgb), 0.8);
-  display: -webkit-box;
-  line-height: 1.15;
+  margin: 0;
   overflow: hidden;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  color: rgba(var(--rp-text-rgb), 0.78);
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color 0.2s ease;
 }
 
 .game-card-info p {
-  font-size: 0.8rem;
-  margin: 0.2rem 0;
-  color: var(--text-secondary);
-  text-shadow: 0.0625rem 0.0625rem 0.1875rem rgba(var(--rp-base-rgb), 0.8);
+  margin: 0.32rem 0 0;
   overflow: hidden;
+  color: var(--text-tertiary);
+  font-size: 0.68rem;
+  font-weight: 600;
   text-overflow: ellipsis;
+  text-transform: uppercase;
   white-space: nowrap;
 }
 
-.game-card:focus {
-  outline: 0.1875rem solid var(--highlight-color);
-  outline-offset: 0.125rem;
-}
-
+.game-card:hover,
+.game-card:focus,
 .game-card.focused {
-  transform: scale(1.1);
   z-index: 10;
-  box-shadow: 0 0.625rem 0.9375rem rgba(var(--rp-base-rgb), 0.7);
-  outline: 0.1875rem solid var(--highlight-color);
-  outline-offset: 0.125rem;
+  transform: translateY(-0.65rem) scale(1.035);
 }
 
+.game-card:hover .game-card-artwork,
+.game-card:focus .game-card-artwork,
+.game-card.focused .game-card-artwork {
+  border-color: rgba(var(--highlight-color-rgb), 0.9);
+  box-shadow:
+    0 0 0 0.125rem rgba(var(--highlight-color-rgb), 0.92),
+    var(--shadow-focus);
+}
+
+.game-card:hover .game-card-cover,
+.game-card:focus .game-card-cover,
+.game-card.focused .game-card-cover {
+  filter: saturate(1.08) contrast(1.03);
+  transform: scale(1.035);
+}
+
+.game-card:hover .game-card-overlay,
+.game-card:focus .game-card-overlay,
 .game-card.focused .game-card-overlay {
   opacity: 1;
 }
 
-.game-card.focused .game-card-info {
+.game-card:hover .game-card-action,
+.game-card:focus .game-card-action,
+.game-card.focused .game-card-action {
   transform: translateY(0);
-  transition: none;
+}
+
+.game-card:hover .game-card-title,
+.game-card:focus .game-card-title,
+.game-card.focused .game-card-title {
+  color: var(--text-primary);
 }
 
 .game-card-runner-icon {
   position: absolute;
-  bottom: 0.5rem;
-  right: 0.5rem;
-  width: 1.5rem;
-  height: 1.5rem;
+  z-index: 2;
+  top: 0.7rem;
+  right: 0.7rem;
+  width: 1.65rem;
+  height: 1.65rem;
+  padding: 0.25rem;
   object-fit: contain;
-  background-color: rgba(var(--rp-base-rgb), 0.6);
-  border-radius: 0.25rem;
-  padding: 0.125rem;
+  border: 0.0625rem solid rgba(var(--rp-text-rgb), 0.16);
+  border-radius: 0.38rem;
+  background: rgba(var(--rp-base-rgb), 0.82);
+  box-shadow: 0 0.4rem 1rem rgba(5, 4, 12, 0.4);
   pointer-events: none;
 }

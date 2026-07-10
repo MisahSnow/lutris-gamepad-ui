@@ -1,32 +1,37 @@
-.settings-menu-label {
-  font-size: 1rem;
-  color: var(--text-secondary);
+.settings-menu-label,
+.display-settings-label,
+.volume-control-label {
   flex-shrink: 0;
-  margin-right: 0.625rem;
+  margin-right: 0.75rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 620;
 }
 
-.focusable-row.focused .settings-menu-label {
+.focusable-row.focused .settings-menu-label,
+.focusable-row.focused .display-settings-label,
+.focusable-row.focused .volume-control-label {
   color: var(--text-primary);
 }
 
 .settings-menu-value {
-  font-size: 1rem;
-  font-weight: bold;
-  color: var(--text-primary);
-  max-width: 55%;
   min-width: 0;
-  overflow: hidden;
+  max-width: 55%;
   padding-right: 0.25em;
+  overflow: hidden;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 730;
   text-align: right;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .settings-menu-value.generic {
-  font-weight: normal;
   color: var(--text-secondary);
+  font-weight: 580;
 }
 
 .unsupported-option {
-  opacity: 0.5;
+  opacity: 0.42;
 }

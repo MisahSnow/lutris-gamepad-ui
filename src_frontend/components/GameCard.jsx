@@ -4,7 +4,7 @@ import "../styles/GameCard.css";
 import { useVisibilityObserver } from "../hooks/useVisibilityObserver";
 import { useSettingsState } from "../stores/settingsStore";
 import { useTranslation } from "../stores/translationStore";
-import { formatDate, formatPlaytime } from "../utils/datetime";
+import { formatDate } from "../utils/datetime";
 import { encodeAppProtocolPath } from "../utils/ipc";
 
 import GameCover from "./GameCover";
@@ -27,56 +27,57 @@ const GameCard = React.forwardRef(
     const className = isFocused ? "game-card focused" : "game-card";
 
     return (
-      <div
+      <article
         ref={setRef}
         className={className}
         data-has-runner-icon={shouldShowRunnerIcon ? "true" : undefined}
+        aria-label={game.title}
         tabIndex="-1"
         onClick={onClick}
         onMouseEnter={onFocus}
       >
-        {shouldRenderMedia ? (
-          game.coverPath ? (
+        <div className="game-card-artwork">
+          {shouldRenderMedia ? (
+            game.coverPath ? (
+              <img
+                src={encodeAppProtocolPath(game.coverPath)}
+                alt={game.title}
+                className="game-card-cover"
+                decoding="async"
+                loading="lazy"
+              />
+            ) : (
+              <GameCover game={game} className="game-card-cover" />
+            )
+          ) : (
+            <div className="game-card-cover placeholder" />
+          )}
+
+          {shouldShowRunnerIcon && (
             <img
-              src={encodeAppProtocolPath(game.coverPath)}
-              alt={game.title}
-              className="game-card-cover"
+              src={encodeAppProtocolPath(game.runtimeIconPath)}
+              alt=""
+              className="game-card-runner-icon"
               decoding="async"
               loading="lazy"
             />
-          ) : (
-            <GameCover game={game} className="game-card-cover" />
-          )
-        ) : (
-          <div className="game-card-cover placeholder" />
-        )}
+          )}
 
-        {shouldShowRunnerIcon && (
-          <img
-            src={encodeAppProtocolPath(game.runtimeIconPath)}
-            alt="Runner Icon"
-            className="game-card-runner-icon"
-            decoding="async"
-            loading="lazy"
-          />
-        )}
-
-        <div className="game-card-overlay">
-          <div className="game-card-info">
-            <h3 className="game-card-title">{game.title}</h3>
-            <p>
-              {t("Playtime: {{playtime}}", {
-                playtime: formatPlaytime(game.playtimeSeconds),
-              })}
-            </p>
-            <p>
-              {t("Last played: {{date}}", {
-                date: formatDate(game.lastPlayed) || t("Never"),
-              })}
-            </p>
+          <div className="game-card-overlay">
+            <span className="game-card-action">{t("Play")}</span>
           </div>
         </div>
-      </div>
+
+        <div className="game-card-info">
+          <h3 className="game-card-title">{game.title}</h3>
+          <p>
+            {game.runner ||
+              t("Last played: {{date}}", {
+                date: formatDate(game.lastPlayed) || t("Never"),
+              })}
+          </p>
+        </div>
+      </article>
     );
   },
 );

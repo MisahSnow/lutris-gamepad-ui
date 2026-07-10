@@ -80,6 +80,7 @@
   "components/GameCard.jsx": {
     "Last played: {{date}}": "آخرین بازی: {{date}}",
     "Never": "هرگز",
+    "Play": "بازی",
     "Playtime: {{playtime}}": "زمان بازی: {{playtime}}"
   },
   "components/LibraryContainer.jsx": {
@@ -87,15 +88,19 @@
     "All Games": "All Games",
     "Are you sure you want to close\n{{title}}?": "آیا مطمئنید که می‌خواهید\n{{title}} را ببندید؟",
     "Are you sure you want to pause\n{{title}}?": "Are you sure you want to pause\n{{title}}?",
+    "Last played: {{date}}": "آخرین بازی: {{date}}",
     "Loading library...": "در حال بارگذاری کتابخانه...",
     "My Library": "My Library",
+    "Never": "هرگز",
     "No games found": "No games found",
     "No results for \"{{searchQuery}}\"": "No results for \"{{searchQuery}}\"",
+    "Playtime: {{playtime}}": "زمان بازی: {{playtime}}",
     "Search": "Search",
     "Search Library": "جستجوی کتابخانه",
     "This action will force-quit the game. Any unsaved progress may be lost.": "این کنش بازی را به‌صورت اجباری می‌بندد. هر پیشرفت ذخیره‌نشده‌ای ممکن است از دست برود.",
     "This feature is experimental. Pausing the game may cause issues.": "This feature is experimental. Pausing the game may cause issues.",
-    "Try a different search term or press 'B' to clear.": "Try a different search term or press 'B' to clear."
+    "Try a different search term or press 'B' to clear.": "Try a different search term or press 'B' to clear.",
+    "Your Library": "کتابخانه شما"
   },
   "components/LoadingIndicator.jsx": {
     "Loading...": "در حال بارگذاری..."
@@ -154,6 +159,8 @@
     "Running Apps": "Running Apps"
   },
   "components/RunningGame.jsx": {
+    "Game session active": "جلسه بازی فعال است",
+    "Game session suspended": "جلسه بازی متوقف شده است",
     "Now Playing": "در حال بازی",
     "Paused": "Paused",
     "Playtime: {{playtime}}": "زمان بازی: {{playtime}}"
@@ -221,6 +228,7 @@
     "No Lutris account connected": "No Lutris account connected",
     "Open Lutris": "باز کردن لوتریس",
     "Power Off System": "خاموش‌کردن سامانه",
+    "Quick Access": "دسترسی سریع",
     "Reboot System": "باز راه‌اندازی سامانه",
     "Reload Library": "بارگذاری دوباره کتابخانه",
     "Reloading library...": "در حال بارگذاری دوباره کتابخانه...",
@@ -230,6 +238,7 @@
     "Suspend System": "Suspend System",
     "Sync Lutris Account": "Sync Lutris Account",
     "Syncing Lutris account...": "Syncing Lutris account...",
+    "System": "سیستم",
     "This action is final and cannot be undone.": "این کنش نهایی است و قابل بازگشت نیست."
   },
   "components/TopBar.jsx": {

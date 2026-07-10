@@ -78,20 +78,24 @@
   "components/GameCard.jsx": {
     "Last played: {{date}}": "Last played: {{date}}",
     "Never": "Never",
-    "Playtime: {{playtime}}": "Playtime: {{playtime}}"
+    "Play": "Play"
   },
   "components/LibraryContainer.jsx": {
     "Add games in Lutris and reload.": "Add games in Lutris and reload.",
     "Are you sure you want to close\n{{title}}?": "Are you sure you want to close\n{{title}}?",
     "Are you sure you want to pause\n{{title}}?": "Are you sure you want to pause\n{{title}}?",
+    "Last played: {{date}}": "Last played: {{date}}",
     "Loading library...": "Loading library...",
+    "Never": "Never",
     "No games found": "No games found",
     "No results for \"{{searchQuery}}\"": "No results for \"{{searchQuery}}\"",
+    "Playtime: {{playtime}}": "Playtime: {{playtime}}",
     "Search": "Search",
     "Search Library": "Search Library",
     "This action will force-quit the game. Any unsaved progress may be lost.": "This action will force-quit the game. Any unsaved progress may be lost.",
     "This feature is experimental. Pausing the game may cause issues.": "This feature is experimental. Pausing the game may cause issues.",
-    "Try a different search term or press 'B' to clear.": "Try a different search term or press 'B' to clear."
+    "Try a different search term or press 'B' to clear.": "Try a different search term or press 'B' to clear.",
+    "Your Library": "Your Library"
   },
   "components/LoadingIndicator.jsx": {
     "Loading...": "Loading..."
@@ -150,6 +154,8 @@
     "Running Apps": "Running Apps"
   },
   "components/RunningGame.jsx": {
+    "Game session active": "Game session active",
+    "Game session suspended": "Game session suspended",
     "Now Playing": "Now Playing",
     "Paused": "Paused",
     "Playtime: {{playtime}}": "Playtime: {{playtime}}"
@@ -217,6 +223,7 @@
     "No Lutris account connected": "No Lutris account connected",
     "Open Lutris": "Open Lutris",
     "Power Off System": "Power Off System",
+    "Quick Access": "Quick Access",
     "Reboot System": "Reboot System",
     "Reload Library": "Reload Library",
     "Reloading library...": "Reloading library...",
@@ -226,6 +233,7 @@
     "Suspend System": "Suspend System",
     "Sync Lutris Account": "Sync Lutris Account",
     "Syncing Lutris account...": "Syncing Lutris account...",
+    "System": "System",
     "This action is final and cannot be undone.": "This action is final and cannot be undone."
   },
   "components/TopBar.jsx": {

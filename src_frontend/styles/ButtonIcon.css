@@ -10,123 +10,65 @@
 }
 
 .button-icon {
-  border-radius: 0.875rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  color: var(--rp-text);
-  border: 0.125rem solid rgba(var(--rp-text-rgb), 0.2);
-  background-color: rgba(var(--rp-text-rgb), 0.1);
+  display: grid;
+  place-items: center;
   box-sizing: border-box;
-}
-
-.button-keyboard-a,
-.button-keyboard-b,
-.button-keyboard-x,
-.button-keyboard-y,
-.button-keyboard-left,
-.button-keyboard-right,
-.button-keyboard-up,
-.button-keyboard-down,
-.button-keyboard-l1,
-.button-keyboard-r1,
-.button-keyboard-select,
-.button-keyboard-start,
-.button-keyboard-super {
-  background-color: rgba(var(--rp-text-rgb), 0.1);
-  border-color: rgba(var(--rp-text-rgb), 0.2);
+  border: 0.0625rem solid rgba(var(--rp-text-rgb), 0.28);
+  border-radius: 50%;
+  background: rgba(var(--rp-text-rgb), 0.08);
   color: var(--rp-text);
+  font-weight: 760;
+  line-height: 1;
 }
 
-.button-xbox-a {
-  background-color: var(--rp-pine);
-  border-color: var(--rp-pine);
-}
-.button-xbox-b {
-  background-color: var(--rp-love);
-  border-color: var(--rp-love);
-}
-.button-xbox-x {
-  background-color: var(--rp-foam);
-  border-color: var(--rp-foam);
-  color: var(--rp-base);
-}
-.button-xbox-y {
-  background-color: var(--rp-gold);
-  border-color: var(--rp-gold);
-  color: var(--rp-base);
-}
-
-.button-xbox-left,
-.button-xbox-right,
-.button-xbox-up,
-.button-xbox-down,
-.button-xbox-l1,
-.button-xbox-r1,
-.button-xbox-select,
-.button-xbox-start,
-.button-xbox-super {
-  background-color: rgba(var(--rp-text-rgb), 0.1);
-  border-color: rgba(var(--rp-text-rgb), 0.2);
-  color: var(--rp-text);
-}
-
+.button-xbox-a,
 .button-playstation-a {
-  background-color: var(--rp-foam);
-  border-color: var(--rp-foam);
+  border-color: var(--rp-rose);
+  background: var(--rp-rose);
   color: var(--rp-base);
 }
+
+.button-xbox-b,
 .button-playstation-b {
-  background-color: var(--rp-love);
   border-color: var(--rp-love);
+  color: var(--rp-love);
 }
+
+.button-xbox-x,
 .button-playstation-x {
-  background-color: var(--rp-iris);
-  border-color: var(--rp-iris);
-  color: var(--rp-base);
+  border-color: var(--rp-foam);
+  color: var(--rp-foam);
 }
+
+.button-xbox-y,
 .button-playstation-y {
-  background-color: var(--rp-pine);
-  border-color: var(--rp-pine);
+  border-color: var(--rp-gold);
+  color: var(--rp-gold);
 }
 
-.button-playstation-left,
-.button-playstation-right,
-.button-playstation-up,
-.button-playstation-down,
-.button-playstation-l1,
-.button-playstation-r1,
-.button-playstation-select,
-.button-playstation-start,
-.button-playstation-super {
-  background-color: rgba(var(--rp-text-rgb), 0.1);
-  border-color: rgba(var(--rp-text-rgb), 0.2);
-  color: var(--rp-text);
+.button-hint.size-large,
+.button-hint.size-small {
+  gap: 0.48rem;
 }
 
-.button-hint.size-large {
-  gap: 0.625rem;
-}
 .button-hint.size-large .button-icon {
   min-width: 1.75rem;
   height: 1.75rem;
-  padding: 0 0.375rem;
-  font-size: 1rem;
-}
-.button-hint.size-large .button-label {
-  font-size: 1rem;
+  padding: 0 0.35rem;
+  font-size: 0.82rem;
 }
 
-.button-hint.size-small {
-  gap: 0.5rem;
+.button-hint.size-large .button-label {
+  font-size: 0.88rem;
 }
+
 .button-hint.size-small .button-icon {
-  min-width: 1.5rem;
-  height: 1.5rem;
+  min-width: 1.45rem;
+  height: 1.45rem;
   padding: 0 0.25rem;
-  font-size: 0.9rem;
+  font-size: 0.7rem;
 }
+
 .button-hint.size-small .button-label {
-  font-size: 0.9rem;
+  font-size: 0.75rem;
 }

@@ -350,7 +350,11 @@ const SystemMenu = () => {
         onClick={() => handleAction(item)}
         onMouseEnter={onMouseEnter}
       >
-        {item.label}
+        <span className="system-menu-item-marker" />
+        <span className="system-menu-item-label">{item.label}</span>
+        <span className="system-menu-item-arrow" aria-hidden="true">
+          ›
+        </span>
       </div>
     ),
     [handleAction],
@@ -369,6 +373,10 @@ const SystemMenu = () => {
 
       {isOpen && (
         <div className="system-menu-overlay">
+          <header className="system-menu-header">
+            <span>{t("System")}</span>
+            <h2>{t("Quick Access")}</h2>
+          </header>
           <LegendaContainer legendItems={legendItems} scrollable={false}>
             <RowBasedMenu
               items={menuItems}

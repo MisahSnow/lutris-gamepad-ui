@@ -80,6 +80,7 @@
   "components/GameCard.jsx": {
     "Last played: {{date}}": "Senast spelad: {{date}}",
     "Never": "Aldrig",
+    "Play": "Spela",
     "Playtime: {{playtime}}": "Speltid: {{playtime}}"
   },
   "components/LibraryContainer.jsx": {
@@ -87,15 +88,19 @@
     "All Games": "All Games",
     "Are you sure you want to close\n{{title}}?": "Är du säker på att du vill stänga\n{{title}}?",
     "Are you sure you want to pause\n{{title}}?": "Are you sure you want to pause\n{{title}}?",
+    "Last played: {{date}}": "Senast spelad: {{date}}",
     "Loading library...": "Laddar bibliotek...",
     "My Library": "My Library",
+    "Never": "Aldrig",
     "No games found": "No games found",
     "No results for \"{{searchQuery}}\"": "No results for \"{{searchQuery}}\"",
+    "Playtime: {{playtime}}": "Speltid: {{playtime}}",
     "Search": "Search",
     "Search Library": "Sök i biblioteket",
     "This action will force-quit the game. Any unsaved progress may be lost.": "Denna åtgärd kommer att tvinga spelet att avslutas. Alla osparade framsteg kan gå förlorade.",
     "This feature is experimental. Pausing the game may cause issues.": "This feature is experimental. Pausing the game may cause issues.",
-    "Try a different search term or press 'B' to clear.": "Try a different search term or press 'B' to clear."
+    "Try a different search term or press 'B' to clear.": "Try a different search term or press 'B' to clear.",
+    "Your Library": "Ditt bibliotek"
   },
   "components/LoadingIndicator.jsx": {
     "Loading...": "Laddar..."
@@ -154,6 +159,8 @@
     "Running Apps": "Running Apps"
   },
   "components/RunningGame.jsx": {
+    "Game session active": "Spelsession aktiv",
+    "Game session suspended": "Spelsession pausad",
     "Now Playing": "Spelas nu",
     "Paused": "Paused",
     "Playtime: {{playtime}}": "Speltid: {{playtime}}"
@@ -221,6 +228,7 @@
     "No Lutris account connected": "No Lutris account connected",
     "Open Lutris": "Öppna Lutris",
     "Power Off System": "Stäng av systemet",
+    "Quick Access": "Snabbåtkomst",
     "Reboot System": "Starta om systemet",
     "Reload Library": "Ladda om biblioteket",
     "Reloading library...": "Laddar om biblioteket...",
@@ -230,6 +238,7 @@
     "Suspend System": "Suspend System",
     "Sync Lutris Account": "Sync Lutris Account",
     "Syncing Lutris account...": "Syncing Lutris account...",
+    "System": "System",
     "This action is final and cannot be undone.": "Denna åtgärd är slutgiltig och kan inte ångras."
   },
   "components/TopBar.jsx": {

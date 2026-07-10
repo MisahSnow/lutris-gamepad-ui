@@ -7,6 +7,13 @@ import { useInput } from "../stores/inputStore";
 import { useTranslation } from "../stores/translationStore";
 import "../styles/TopBar.css";
 
+const BrandMark = () => (
+  <svg viewBox="0 0 32 32" aria-hidden="true">
+    <path d="M16 2 30 16 16 30 2 16 16 2Z" />
+    <path d="m16 8 8 8-8 8-8-8 8-8Z" />
+  </svg>
+);
+
 const AudioIndicator = () => {
   const { t } = useTranslation();
   const { volume, isMuted, isLoading: audioIsLoading } = useAudio();
@@ -69,25 +76,35 @@ const TopBar = () => {
   return (
     <div className="top-bar">
       <div className="top-bar-content">
-        <span className="top-bar-pill top-bar-time">
-          <span className="top-bar-value">{time}</span>
-        </span>
-        <span className="top-bar-pill">
-          <span className="top-bar-label">PAD</span>
-          <span className="top-bar-value">
-            {gamepadCount > 0 ? gamepadCount : "N/A"}
+        <div className="top-bar-brand">
+          <span className="top-bar-brand-mark">
+            <BrandMark />
           </span>
-        </span>
-        {!isAudioDisabled && <AudioIndicator />}
-        <span
-          className={`top-bar-pill top-bar-network ${
-            isOnline ? "online" : "offline"
-          }`}
-        >
-          <span className="top-bar-status-dot" />
-          <span className="top-bar-value">{getNetworkIndicator()}</span>
-        </span>
-        <span className="top-bar-version">v{packageJson.version}</span>
+          <span className="top-bar-brand-copy">
+            <strong>LUTRIS</strong>
+            <small>GAMEPAD UI</small>
+          </span>
+        </div>
+
+        <div className="top-bar-status">
+          <span
+            className={`top-bar-pill top-bar-network ${
+              isOnline ? "online" : "offline"
+            }`}
+          >
+            <span className="top-bar-status-dot" />
+            <span className="top-bar-value">{getNetworkIndicator()}</span>
+          </span>
+          <span className="top-bar-pill">
+            <span className="top-bar-label">PAD</span>
+            <span className="top-bar-value">
+              {gamepadCount > 0 ? gamepadCount : "—"}
+            </span>
+          </span>
+          {!isAudioDisabled && <AudioIndicator />}
+          <span className="top-bar-version">v{packageJson.version}</span>
+          <span className="top-bar-time">{time}</span>
+        </div>
       </div>
     </div>
   );

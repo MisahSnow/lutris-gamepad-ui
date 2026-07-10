@@ -1,98 +1,172 @@
 .system-menu-container {
   position: fixed;
-  top: 0.9375rem;
-  right: 0.9375rem;
   z-index: 2000;
+  top: 1.18rem;
+  right: 4.5%;
+  padding-left: 1.25rem;
+  border-left: 0.0625rem solid rgba(var(--rp-text-rgb), 0.14);
 }
 
 .system-menu-toggle {
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 50%;
-  border: none;
-  background-color: rgba(var(--rp-surface-rgb), 0.9);
-  color: var(--text-secondary);
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2.35rem;
+  height: 2.35rem;
+  padding: 0.4rem;
+  border: 0;
+  border-radius: 0.4rem;
+  outline: 0;
+  background: transparent;
+  color: var(--text-tertiary);
   cursor: pointer;
+  overflow: visible;
   transition:
-    background-color 0.2s ease,
-    transform 0.2s ease,
-    color 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
+    background-color 0.18s ease,
+    color 0.18s ease;
 }
 
 .system-menu-toggle svg {
-  width: 1.5rem;
-  height: 1.5rem;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  stroke-width: 1.8;
 }
 
-.system-menu-toggle:hover {
-  background-color: var(--highlight-color);
-  color: var(--highlight-text-color);
-  transform: scale(1.1);
-}
-
+.system-menu-toggle:hover,
 .system-menu-toggle:focus {
-  outline: 0.125rem solid var(--highlight-color);
-  outline-offset: 0.125rem;
-  background-color: rgba(var(--highlight-color-rgb), 0.8);
-  color: var(--highlight-text-color);
+  background: rgba(var(--highlight-color-rgb), 0.12);
+  color: var(--highlight-color);
 }
 
 .system-menu-overlay {
-  position: absolute;
-  top: 3.125rem;
+  position: fixed;
+  z-index: 1;
+  top: 0;
   right: 0;
-  background-color: rgba(var(--rp-overlay-rgb), 0.98);
-  border-radius: 0.5rem;
-  border: 0.0625rem solid rgba(var(--rp-text-rgb), 0.1);
-  box-shadow: 0 0.25rem 0.625rem rgba(var(--rp-base-rgb), 0.5);
-  min-width: 12.5rem;
-  padding-top: 0.5rem;
-  animation: fadeInMenu 0.2s ease-out;
-  max-height: calc(100vh - 5.3125rem);
   display: flex;
   flex-direction: column;
+  width: min(30rem, 92vw);
+  height: 100vh;
   overflow: hidden;
+  border-left: 0.0625rem solid rgba(var(--rp-text-rgb), 0.14);
+  background:
+    linear-gradient(145deg, rgba(var(--rp-iris-rgb), 0.05), transparent 32%),
+    var(--rp-surface);
+  box-shadow:
+    0 0 0 100vmax rgba(var(--rp-base-rgb), 0.74),
+    -1.5rem 0 5rem rgba(5, 4, 12, 0.5);
+  animation: systemMenuEnter 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.system-menu-header {
+  flex: 0 0 auto;
+  padding: 5.5rem 2rem 1.6rem;
+  border-bottom: 0.0625rem solid rgba(var(--rp-text-rgb), 0.1);
+}
+
+.system-menu-header span {
+  color: var(--highlight-color);
+  font-size: 0.65rem;
+  font-weight: 850;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.system-menu-header h2 {
+  margin: 0.45rem 0 0;
+  font-size: 2.15rem;
+  font-weight: 760;
+  letter-spacing: -0.04em;
 }
 
 .system-menu-overlay .legenda-content {
-  --legenda-content-padding: 0;
-  --row-based-menu-list-padding: 0;
+  --legenda-content-padding: 0.7rem 0;
+  --row-based-menu-list-padding: 0.5rem 1rem 1rem;
 }
 
-@keyframes fadeInMenu {
-  from {
-    opacity: 0;
-    transform: translateY(-0.625rem);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.system-menu-overlay .legenda-footer {
+  min-height: 4.2rem;
+  padding-inline: 1.4rem;
+  background: var(--rp-base);
 }
 
-.system-menu-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.system-menu-overlay .legenda-identity {
+  display: none;
 }
 
 .system-menu-item {
-  padding: 0.75rem 1.25rem;
-  color: var(--text-secondary);
+  position: relative;
+  display: grid;
+  grid-template-columns: 0.35rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.85rem;
+  min-height: 3.35rem;
+  margin-bottom: 0.22rem;
+  padding: 0.55rem 0.9rem;
+  border: 0.0625rem solid transparent;
+  border-radius: var(--radius-small);
+  color: rgba(var(--rp-text-rgb), 0.64);
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.94rem;
+  font-weight: 620;
   transition:
-    background-color 0.2s ease,
-    color 0.2s ease;
+    border-color 0.16s ease,
+    background-color 0.16s ease,
+    color 0.16s ease,
+    transform 0.16s ease;
+}
+
+.system-menu-item-marker {
+  width: 0.28rem;
+  height: 0.28rem;
+  background: var(--rp-muted);
+  transform: rotate(45deg);
+}
+
+.system-menu-item-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.system-menu-item-arrow {
+  color: var(--text-tertiary);
+  font-size: 1.35rem;
 }
 
 .system-menu-item:hover,
 .system-menu-item.focused {
-  background-color: var(--highlight-color);
-  color: var(--highlight-text-color);
+  border-color: rgba(var(--highlight-color-rgb), 0.4);
+  background: rgba(var(--highlight-color-rgb), 0.11);
+  color: var(--text-primary);
+  transform: translateX(0.25rem);
+}
+
+.system-menu-item:hover .system-menu-item-marker,
+.system-menu-item.focused .system-menu-item-marker {
+  background: var(--highlight-color);
+}
+
+.system-menu-item:hover .system-menu-item-arrow,
+.system-menu-item.focused .system-menu-item-arrow {
+  color: var(--highlight-color);
+}
+
+@keyframes systemMenuEnter {
+  from {
+    opacity: 0;
+    transform: translateX(2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 900px) {
+  .system-menu-container {
+    right: 3%;
+  }
 }

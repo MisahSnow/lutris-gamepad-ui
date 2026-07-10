@@ -9,7 +9,12 @@ import { useLutris, useLutrisActions } from "../stores/lutrisStore";
 import { useModalActions, useModalState } from "../stores/modalStore";
 import { useTranslation } from "../stores/translationStore";
 import { useUI } from "../stores/uiStore";
-import { toggleWindowShow, toggleGamePause } from "../utils/ipc";
+import { formatDate, formatPlaytime } from "../utils/datetime";
+import {
+  encodeAppProtocolPath,
+  toggleWindowShow,
+  toggleGamePause,
+} from "../utils/ipc";
 
 import ConfirmationDialog from "./ConfirmationDialog";
 import ControlsOverlay from "./ControlsOverlay";
@@ -33,7 +38,8 @@ const LibraryContainer = () => {
 
   const [searchQuery, setSearchQuery] = useState("");
   const gameCloseModalReference = useRef(null);
-  const scrollParentReference = useRef(null);
+  const contentReference = useRef(null);
+  const libraryScrollReference = useRef(null);
 
   const { shelves } = useGameShelves(games, searchQuery);
   const [activeShelfIndex, setActiveShelfIndex] = useState(0);
@@ -59,6 +65,7 @@ const LibraryContainer = () => {
   }, [runningGame]);
 
   const [focusedGame, setFocusedGame] = useState(null);
+  const featuredGame = focusedGame || activeShelf?.games?.[0] || null;
 
   const showSearchModalCallback = useCallback(() => {
     showModal((hideThisModal) => (
@@ -282,18 +289,21 @@ const LibraryContainer = () => {
     [],
   );
 
-  const renderHeader = useCallback(
-    () => {
-      if (searchQuery) {
-        return (
-          <header className="library-header">
-            <h1>{t("Search")}</h1>
-          </header>
-        );
-      }
+  const renderHeader = useCallback(() => {
+    const backgroundStyle = featuredGame?.coverPath
+      ? {
+          backgroundImage: `url("${encodeAppProtocolPath(
+            featuredGame.coverPath,
+          )}")`,
+        }
+      : undefined;
 
-      return (
-        <header className="library-header">
+    return (
+      <header className="library-hero">
+        <div className="library-hero-art" style={backgroundStyle} />
+        <div className="library-hero-vignette" />
+
+        <div className="library-hero-layout">
           <nav className="library-tabs" aria-label="Library categories">
             {shelves.map((shelf, shelfIndex) => {
               const isActive = shelfIndex === normalizedActiveShelfIndex;
@@ -311,17 +321,44 @@ const LibraryContainer = () => {
               );
             })}
           </nav>
-        </header>
-      );
-    },
-    [
-      normalizedActiveShelfIndex,
-      searchQuery,
-      selectShelfCallback,
-      shelves,
-      t,
-    ],
-  );
+
+          <div className="library-hero-copy">
+            <div className="library-hero-eyebrow">
+              <span>{searchQuery ? t("Search") : activeShelf?.title}</span>
+              <span className="library-hero-count">
+                {activeShelf?.games?.length || 0}
+              </span>
+            </div>
+            <h1>{featuredGame?.title || t("Your Library")}</h1>
+            {featuredGame && (
+              <div className="library-hero-meta">
+                {featuredGame.runner && <span>{featuredGame.runner}</span>}
+                <span>
+                  {t("Playtime: {{playtime}}", {
+                    playtime: formatPlaytime(featuredGame.playtimeSeconds),
+                  })}
+                </span>
+                <span>
+                  {t("Last played: {{date}}", {
+                    date: formatDate(featuredGame.lastPlayed) || t("Never"),
+                  })}
+                </span>
+              </div>
+            )}
+            <div className="library-hero-rule" />
+          </div>
+        </div>
+      </header>
+    );
+  }, [
+    activeShelf,
+    featuredGame,
+    normalizedActiveShelfIndex,
+    searchQuery,
+    selectShelfCallback,
+    shelves,
+    t,
+  ]);
 
   const renderEmpty = useCallback(
     () => (
@@ -359,7 +396,7 @@ const LibraryContainer = () => {
     return (
       <ControlsOverlay
         {...controlsOverlayProperties}
-        scrollParentRef={scrollParentReference}
+        scrollParentRef={contentReference}
       >
         <RunningGame
           game={runningGame}
@@ -374,8 +411,7 @@ const LibraryContainer = () => {
     if (shelves.length > 1) {
       controlsOverlayProperties.onPrevCategory = () =>
         navigateShelfCallback(-1);
-      controlsOverlayProperties.onNextCategory = () =>
-        navigateShelfCallback(1);
+      controlsOverlayProperties.onNextCategory = () => navigateShelfCallback(1);
     }
     if (focusedGame) {
       controlsOverlayProperties.onLaunchGame = () => launchGame(focusedGame);
@@ -391,7 +427,7 @@ const LibraryContainer = () => {
   return (
     <ControlsOverlay
       {...controlsOverlayProperties}
-      scrollParentRef={scrollParentReference}
+      scrollParentRef={contentReference}
     >
       <GridMenu
         sections={sections}
@@ -403,7 +439,7 @@ const LibraryContainer = () => {
         onFocusChange={setFocusedGame}
         focusId={LibraryContainerFocusID}
         isActive={!runningGame && !isModalOpen}
-        scrollParentRef={scrollParentReference}
+        scrollParentRef={libraryScrollReference}
       />
     </ControlsOverlay>
   );

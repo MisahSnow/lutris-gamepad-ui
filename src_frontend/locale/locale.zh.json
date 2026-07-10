@@ -80,6 +80,7 @@
   "components/GameCard.jsx": {
     "Last played: {{date}}": "上次游玩：{{date}}",
     "Never": "从未",
+    "Play": "游玩",
     "Playtime: {{playtime}}": "游玩时长：{{playtime}}"
   },
   "components/LibraryContainer.jsx": {
@@ -87,15 +88,19 @@
     "All Games": "All Games",
     "Are you sure you want to close\n{{title}}?": "确定要关闭\n{{title}} 吗？",
     "Are you sure you want to pause\n{{title}}?": "确定要暂停\n{{title}} 吗？",
+    "Last played: {{date}}": "上次游玩：{{date}}",
     "Loading library...": "正在加载库...",
     "My Library": "我的库",
+    "Never": "从未",
     "No games found": "未找到游戏",
     "No results for \"{{searchQuery}}\"": "未找到与 \"{{searchQuery}}\" 相关的结果",
+    "Playtime: {{playtime}}": "游玩时长：{{playtime}}",
     "Search": "搜索",
     "Search Library": "搜索库",
     "This action will force-quit the game. Any unsaved progress may be lost.": "此操作将强制退出游戏，未保存的进度可能会丢失。",
     "This feature is experimental. Pausing the game may cause issues.": "此功能为实验性。暂停游戏可能会导致问题。",
-    "Try a different search term or press 'B' to clear.": "请尝试不同的搜索词或按 'B' 清除。"
+    "Try a different search term or press 'B' to clear.": "请尝试不同的搜索词或按 'B' 清除。",
+    "Your Library": "你的游戏库"
   },
   "components/LoadingIndicator.jsx": {
     "Loading...": "加载中..."
@@ -154,6 +159,8 @@
     "Running Apps": "Running Apps"
   },
   "components/RunningGame.jsx": {
+    "Game session active": "游戏会话进行中",
+    "Game session suspended": "游戏会话已暂停",
     "Now Playing": "正在游玩",
     "Paused": "已暂停",
     "Playtime: {{playtime}}": "游玩时长：{{playtime}}"
@@ -221,6 +228,7 @@
     "No Lutris account connected": "No Lutris account connected",
     "Open Lutris": "打开 Lutris",
     "Power Off System": "关机",
+    "Quick Access": "快速访问",
     "Reboot System": "重启系统",
     "Reload Library": "重载库",
     "Reloading library...": "正在重载库...",
@@ -230,6 +238,7 @@
     "Suspend System": "Suspend System",
     "Sync Lutris Account": "Sync Lutris Account",
     "Syncing Lutris account...": "Syncing Lutris account...",
+    "System": "系统",
     "This action is final and cannot be undone.": "此操作不可撤销。"
   },
   "components/TopBar.jsx": {

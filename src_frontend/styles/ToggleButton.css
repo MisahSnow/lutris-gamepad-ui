@@ -1,22 +1,25 @@
 .toggle-button {
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-  font-weight: bold;
-  background-color: rgba(var(--rp-text-rgb), 0.1);
+  min-width: 4.6rem;
+  padding: 0.45rem 0.8rem;
+  border: 0.0625rem solid rgba(var(--rp-text-rgb), 0.18);
+  border-radius: 99rem;
+  background: rgba(var(--rp-base-rgb), 0.38);
   color: var(--text-secondary);
-  border: 0.0625rem solid rgba(var(--rp-text-rgb), 0.2);
-  border-radius: 0.25rem;
   cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease;
+  font-size: 0.7rem;
+  font-weight: 780;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
   white-space: nowrap;
+  transition:
+    border-color 0.16s ease,
+    background-color 0.16s ease,
+    color 0.16s ease;
 }
 
 .focusable-row:hover .toggle-button,
 .focusable-row.focused .toggle-button {
-  background-color: var(--highlight-color);
-  color: var(--highlight-text-color);
   border-color: var(--highlight-color);
+  background: var(--highlight-color);
+  color: var(--highlight-text-color);
 }

@@ -4,7 +4,13 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: var(--primary-background);
+  background:
+    radial-gradient(
+      circle at 50% 20%,
+      rgba(var(--rp-love-rgb), 0.08),
+      transparent 30rem
+    ),
+    var(--primary-background);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,9 +23,9 @@
 }
 
 .crash-dialog-details {
-  background-color: var(--primary-background);
+  background-color: rgba(var(--rp-base-rgb), 0.62);
   border: 0.0625rem solid rgba(var(--rp-text-rgb), 0.1);
-  border-radius: 0.375rem;
+  border-radius: var(--radius-small);
   padding: 1rem;
   text-align: left;
   margin-top: 1rem;

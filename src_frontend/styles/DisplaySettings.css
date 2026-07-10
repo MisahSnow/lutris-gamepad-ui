@@ -1,12 +1,12 @@
 .display-settings-label {
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: var(--text-secondary);
   flex-shrink: 0;
   margin-right: 0.625rem;
 }
 
 .display-settings-value {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: bold;
   color: var(--text-primary);
 }
@@ -14,7 +14,7 @@
 .display-settings-error-msg {
   font-size: 0.9rem;
   color: var(--error-color, var(--rp-love));
-  text-align: center;
+  text-align: left;
   margin-bottom: 1rem;
   padding: 0 1rem;
 }

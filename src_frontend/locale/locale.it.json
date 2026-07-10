@@ -80,6 +80,7 @@
   "components/GameCard.jsx": {
     "Last played: {{date}}": "Ultimo avvio: {{date}}",
     "Never": "Mai giocato",
+    "Play": "Gioca",
     "Playtime: {{playtime}}": "Ore di gioco: {{playtime}}"
   },
   "components/LibraryContainer.jsx": {
@@ -87,15 +88,19 @@
     "All Games": "All Games",
     "Are you sure you want to close\n{{title}}?": "Forzare la chiusura di\n{{title}}?",
     "Are you sure you want to pause\n{{title}}?": "Are you sure you want to pause\n{{title}}?",
+    "Last played: {{date}}": "Ultimo avvio: {{date}}",
     "Loading library...": "Caricamento libreria...",
     "My Library": "My Library",
+    "Never": "Mai giocato",
     "No games found": "No games found",
     "No results for \"{{searchQuery}}\"": "No results for \"{{searchQuery}}\"",
+    "Playtime: {{playtime}}": "Ore di gioco: {{playtime}}",
     "Search": "Search",
     "Search Library": "Cerca nella libreria",
     "This action will force-quit the game. Any unsaved progress may be lost.": "Questa operazione forzerà la chiusura del gioco. Eventuali progressi non salvati andranno persi.",
     "This feature is experimental. Pausing the game may cause issues.": "Questa funzionalità è sperimentale. Mettere in pausa il gioco potrebbe causare problemi.",
-    "Try a different search term or press 'B' to clear.": "Try a different search term or press 'B' to clear."
+    "Try a different search term or press 'B' to clear.": "Try a different search term or press 'B' to clear.",
+    "Your Library": "La tua libreria"
   },
   "components/LoadingIndicator.jsx": {
     "Loading...": "Caricamento..."
@@ -154,6 +159,8 @@
     "Running Apps": "Running Apps"
   },
   "components/RunningGame.jsx": {
+    "Game session active": "Sessione di gioco attiva",
+    "Game session suspended": "Sessione di gioco sospesa",
     "Now Playing": "In gioco",
     "Paused": "In pausa",
     "Playtime: {{playtime}}": "Ore di gioco: {{playtime}}"
@@ -221,6 +228,7 @@
     "No Lutris account connected": "No Lutris account connected",
     "Open Lutris": "Apri Lutris",
     "Power Off System": "Spegni il sistema",
+    "Quick Access": "Accesso rapido",
     "Reboot System": "Riavvia il sistema",
     "Reload Library": "Aggiorna libreria",
     "Reloading library...": "Ricaricamento libreria...",
@@ -230,6 +238,7 @@
     "Suspend System": "Suspend System",
     "Sync Lutris Account": "Sync Lutris Account",
     "Syncing Lutris account...": "Syncing Lutris account...",
+    "System": "Sistema",
     "This action is final and cannot be undone.": "Questa azione è irreversibile."
   },
   "components/TopBar.jsx": {

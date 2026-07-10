@@ -4,6 +4,7 @@
   flex: 1;
   min-height: 0;
   --legenda-content-padding: 0;
+  background: transparent;
 }
 
 .controls-overlay-wrapper .legenda-content::-webkit-scrollbar {
@@ -12,6 +13,7 @@
 
 .controls-overlay-wrapper .legenda-content {
   -ms-overflow-style: none;
+  overflow-y: hidden;
 }
 
 .controls-overlay-wrapper .legenda-footer {

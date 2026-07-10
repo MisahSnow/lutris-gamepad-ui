@@ -25,9 +25,14 @@ const DialogLayout = ({
         scrollable={scrollable}
       >
         <div className={`dialog-layout-content ${contentClassName}`}>
-          {title && <h2 className="dialog-layout-title">{title}</h2>}
-          {description && (
-            <p className="dialog-layout-description">{description}</p>
+          {(title || description) && (
+            <header className="dialog-layout-header">
+              <span className="dialog-layout-header-mark" />
+              {title && <h2 className="dialog-layout-title">{title}</h2>}
+              {description && (
+                <p className="dialog-layout-description">{description}</p>
+              )}
+            </header>
           )}
           {children}
         </div>

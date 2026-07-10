@@ -1,26 +1,27 @@
 .percentage-bar-display {
   display: flex;
   align-items: center;
-  gap: 0.625rem;
+  gap: 0.75rem;
 }
 
 .percentage-bar-container {
-  inline-size: clamp(6rem, 14vw, 10rem);
-  block-size: 0.5rem;
-  background-color: rgba(var(--rp-text-rgb), 0.1);
-  border-radius: 999rem;
+  inline-size: clamp(6rem, 14vw, 11rem);
+  block-size: 0.28rem;
   overflow: hidden;
+  background: rgba(var(--rp-text-rgb), 0.13);
 }
 
 .percentage-bar-fill {
   height: 100%;
-  background-color: var(--highlight-color);
-  border-radius: 999rem;
+  background: var(--highlight-color);
+  box-shadow: 0 0 0.7rem rgba(var(--highlight-color-rgb), 0.6);
   transition: width 0.1s linear;
 }
 
 .percentage-bar-value {
-  font-size: 1rem;
-  font-weight: bold;
+  min-width: 3.6rem;
   color: var(--text-primary);
+  font-size: 0.8rem;
+  font-weight: 730;
+  text-align: right;
 }
