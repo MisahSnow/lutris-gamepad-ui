@@ -3,11 +3,7 @@ const os = require("node:os");
 const path = require("node:path");
 
 const { getMainWindow, addWhitelistedFile } = require("./state.cjs");
-const {
-  execFilePromise,
-  getProcessDescendants,
-  logInfo,
-} = require("./utils.cjs");
+const { execFilePromise, logInfo } = require("./utils.cjs");
 
 const HYPRLAND_ADDRESS_REGEX = /^0x[\da-f]+$/i;
 const HYPRLAND_STATE_WAIT_TIMEOUT_MS = 1200;
@@ -534,11 +530,9 @@ function validateHyprlandAddress(address) {
 }
 
 function getProtectedPids() {
-  return new Set([
-    process.pid,
-    ...getProcessDescendants(process.pid, new Set()),
-    ...getProcessAncestors(process.pid),
-  ]);
+  // Descendants may be Kodi, frontends, or games launched by this app.
+  // Electron-owned child processes are filtered separately by command line.
+  return new Set([process.pid, ...getProcessAncestors(process.pid)]);
 }
 
 function getProcessLabel(pid, statusName, cmdline) {
@@ -557,6 +551,7 @@ function isCurrentAppProcess(pid, cmdline) {
 
   const commandText = cmdline.join(" ");
   return (
+    commandText.includes("lutris-bigscreen") ||
     commandText.includes("lutris-gamepad-ui") ||
     commandText.includes("electron.cjs")
   );

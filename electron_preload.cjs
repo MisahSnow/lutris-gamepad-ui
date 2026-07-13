@@ -26,6 +26,8 @@ contextBridge.exposeInMainWorld("electronAPI", {
 
   // Games
   getGames: () => ipcRenderer.invoke("get-games"),
+  getGameHeroImage: (gameId) =>
+    ipcRenderer.invoke("get-game-hero-image", gameId),
   launchGame: (gameId) => ipcRenderer.send("launch-game", gameId),
   closeGame: (gameId) => ipcRenderer.send("close-game", gameId),
   toggleGamePause: () => ipcRenderer.send("toggle-game-pause"),

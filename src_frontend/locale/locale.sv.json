@@ -116,7 +116,9 @@
     "Failed to add game": "Failed to add game",
     "Failed to fetch Lutris settings": "Failed to fetch Lutris settings",
     "Game": "Game",
+    "Game info": "Game info",
     "Game name is required": "Game name is required",
+    "Game options": "Game options",
     "Info": "Info",
     "Name": "Name",
     "Optional": "Optional",
@@ -124,9 +126,11 @@
     "Release year must be a number": "Release year must be a number",
     "Required": "Required",
     "Runner": "Runner",
+    "Runner options": "Runner options",
     "Save": "Save",
     "Sort name": "Sort name",
-    "System": "System"
+    "System": "System",
+    "System options": "System options"
   },
   "components/LutrisSettingsFlow.jsx": {
     "Failed to fetch Lutris runners": "Failed to fetch Lutris runners",

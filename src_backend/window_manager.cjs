@@ -124,8 +124,11 @@ function encodeAppProtocolPath(filePath) {
 
 function getHomePageUrl() {
   const searchParams = new URLSearchParams();
+  // Keep the original prefixes as compatibility aliases for existing setups.
   fillSearchParams(searchParams, "LUTRIS_GAMEPAD_UI_ENABLE_", "ENABLE");
   fillSearchParams(searchParams, "LUTRIS_GAMEPAD_UI_DISABLE_", "DISABLE");
+  fillSearchParams(searchParams, "LUTRIS_BIGSCREEN_ENABLE_", "ENABLE");
+  fillSearchParams(searchParams, "LUTRIS_BIGSCREEN_DISABLE_", "DISABLE");
 
   const queryString = searchParams.toString();
   const suffix = queryString ? `?${queryString}` : "";
@@ -230,7 +233,7 @@ function createWindow(onWindowClosedCallback) {
       autoplayPolicy: "no-user-gesture-required",
     },
     frame: !fullscreen,
-    title: "Lutris Gamepad UI",
+    title: "Lutris Bigscreen",
   });
 
   if (!fullscreen) {

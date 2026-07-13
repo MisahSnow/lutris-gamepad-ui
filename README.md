@@ -1,6 +1,6 @@
-# Lutris Gamepad UI
+# Lutris Bigscreen
 
-A simple, TV-friendly, gamepad-navigable frontend for the [Lutris](https://lutris.net/) game launcher on Linux. This application provides a "10-foot UI" designed for couch gaming, allowing you to browse and launch your Lutris library entirely with a gamepad.
+Lutris Bigscreen is a TV-friendly, gamepad-navigable frontend for the [Lutris](https://lutris.net/) game launcher on Linux. It provides a "10-foot UI" designed for couch gaming, allowing you to browse and launch your Lutris library entirely with a gamepad.
 
 [View Screenshots](./README_SCREENSHOTS.md)
 
@@ -26,7 +26,7 @@ A simple, TV-friendly, gamepad-navigable frontend for the [Lutris](https://lutri
   - **PulseAudio** or **PipeWire** (optional, for audio control).
   - **GNOME** or **KDE** (optional, for native display management).
   - **ddcutil** (optional, for external monitor brightness control).
-  - **SDL3** (optional, for LUTRIS_GAMEPAD_UI_ENABLE_SDL_INPUT).
+  - **SDL3** (optional, for `LUTRIS_BIGSCREEN_ENABLE_SDL_INPUT`).
   - **X11** (optional, for Gamescope focus management).
 
 ## Installation
@@ -38,8 +38,8 @@ You can download the latest `.AppImage` from the [**Releases page**](https://git
 After downloading, make the file executable and run it:
 
 ```bash
-chmod +x lutris-gamepad-ui-*.AppImage
-./lutris-gamepad-ui-*.AppImage
+chmod +x lutris-bigscreen-*.AppImage
+./lutris-bigscreen-*.AppImage
 ```
 
 ### Arch User Repository (AUR)
@@ -81,7 +81,7 @@ On first launch, the application creates two files in its configuration director
     Navigate to the application's configuration directory:
 
     ```bash
-    cd ~/.local/lutris-gamepad-ui/
+    cd ~/.config/lutris-bigscreen.d/
     ```
 
 2.  **Identify the Element to Style:**
@@ -127,7 +127,7 @@ Here are the steps you need to follow before submitting JavaScript changes to th
 
 3. **Cleanup locale files**
    ```bash
-   LUTRIS_GAMEPAD_UI_LOCALE_CLEANUP=1 npm run build:vite
+   LUTRIS_BIGSCREEN_LOCALE_CLEANUP=1 npm run build:vite
    ```
 
 Here are the steps you need to follow before submitting Python changes to this repository:
@@ -176,21 +176,23 @@ You can customize the application's behavior using the following environment var
 
 | Variable                                     | Description                                                          |
 | :------------------------------------------- | :------------------------------------------------------------------- |
-| `LUTRIS_GAMEPAD_UI_IS_DEV`                   | Enable development mode (hot reloading, devtools).                   |
-| `LUTRIS_GAMEPAD_UI_FORCE_WINDOWED`           | Force the application to run in a window instead of fullscreen.      |
-| `LUTRIS_GAMEPAD_UI_LOCALE_CLEANUP`           | Remove unused translation strings during build.                      |
-| `LUTRIS_GAMEPAD_UI_ENABLE_SDL_INPUT`         | Use SDL3 for gamepad input (alternative to Web Gamepad API).         |
-| `LUTRIS_GAMEPAD_UI_DISABLE_ANIMATIONS`       | Disable all UI animations for a faster feel or lower resource usage. |
-| `LUTRIS_GAMEPAD_UI_DISABLE_UPDATE_CHECKER`   | Disable the AppImage update checker.                                 |
-| `LUTRIS_GAMEPAD_UI_DISABLE_LUTRIS_SETTINGS`  | Hide the "Lutris settings" from the system menu.                     |
-| `LUTRIS_GAMEPAD_UI_DISABLE_AUDIO_SETTINGS`   | Hide the "Audio settings" from the system menu.                      |
-| `LUTRIS_GAMEPAD_UI_DISABLE_DISPLAY_SETTINGS` | Hide the "Display settings" from the system menu.                    |
-| `LUTRIS_GAMEPAD_UI_DISABLE_OPEN_LUTRIS`      | Hide the "Open Lutris" option from the system menu.                  |
-| `LUTRIS_GAMEPAD_UI_DISABLE_REBOOT_SYSTEM`    | Hide the "Reboot System" option from the system menu.                |
-| `LUTRIS_GAMEPAD_UI_DISABLE_POWER_OFF_SYSTEM` | Hide the "Power Off System" option from the system menu.             |
-| `LUTRIS_GAMEPAD_UI_DISABLE_BUG_REPORT`       | Hide the "Generate Bug Report" option from the system menu.          |
-| `LUTRIS_GAMEPAD_UI_DISABLE_SUSPEND_SYSTEM`   | Hide the "Suspend System" option from the system menu.               |
-| `LUTRIS_GAMEPAD_UI_DISABLE_SYNC_ACCOUNT`     | Hide the "Sync Lutris Account" option from the system menu.          |
+| `LUTRIS_BIGSCREEN_IS_DEV`                   | Enable development mode (hot reloading, devtools).                   |
+| `LUTRIS_BIGSCREEN_FORCE_WINDOWED`           | Force the application to run in a window instead of fullscreen.      |
+| `LUTRIS_BIGSCREEN_LOCALE_CLEANUP`           | Remove unused translation strings during build.                      |
+| `LUTRIS_BIGSCREEN_ENABLE_SDL_INPUT`         | Use SDL3 for gamepad input (alternative to Web Gamepad API).         |
+| `LUTRIS_BIGSCREEN_DISABLE_ANIMATIONS`       | Disable all UI animations for a faster feel or lower resource usage. |
+| `LUTRIS_BIGSCREEN_DISABLE_UPDATE_CHECKER`   | Disable the AppImage update checker.                                 |
+| `LUTRIS_BIGSCREEN_DISABLE_LUTRIS_SETTINGS`  | Hide the "Lutris settings" from the system menu.                     |
+| `LUTRIS_BIGSCREEN_DISABLE_AUDIO_SETTINGS`   | Hide the "Audio settings" from the system menu.                      |
+| `LUTRIS_BIGSCREEN_DISABLE_DISPLAY_SETTINGS` | Hide the "Display settings" from the system menu.                    |
+| `LUTRIS_BIGSCREEN_DISABLE_OPEN_LUTRIS`      | Hide the "Open Lutris" option from the system menu.                  |
+| `LUTRIS_BIGSCREEN_DISABLE_REBOOT_SYSTEM`    | Hide the "Reboot System" option from the system menu.                |
+| `LUTRIS_BIGSCREEN_DISABLE_POWER_OFF_SYSTEM` | Hide the "Power Off System" option from the system menu.             |
+| `LUTRIS_BIGSCREEN_DISABLE_BUG_REPORT`       | Hide the "Generate Bug Report" option from the system menu.          |
+| `LUTRIS_BIGSCREEN_DISABLE_SUSPEND_SYSTEM`   | Hide the "Suspend System" option from the system menu.               |
+| `LUTRIS_BIGSCREEN_DISABLE_SYNC_ACCOUNT`     | Hide the "Sync Lutris Account" option from the system menu.          |
+
+The former `LUTRIS_GAMEPAD_UI_*` names remain supported as compatibility aliases.
 
 ## License
 

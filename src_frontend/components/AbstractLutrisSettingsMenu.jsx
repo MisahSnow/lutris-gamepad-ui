@@ -18,7 +18,13 @@ const LutrisSettingsMenuFocusId = "LutrisSettingsMenu";
 
 const TEXT_OPTION_TYPES = new Set(["string", "text", "command_line"]);
 const PATH_OPTION_TYPES = new Set(["file", "directory"]);
-const DEFAULT_SECTION_ORDER = ["system", "runner", "game"];
+// Match the tab order and names used by Lutris's game configuration dialog.
+const DEFAULT_SECTION_ORDER = ["game", "runner", "system"];
+const DEFAULT_SECTION_LABELS = {
+  game: "Game options",
+  runner: "Runner options",
+  system: "System options",
+};
 
 const hasChoices = (item) => item.choices && item.choices.length > 0;
 
@@ -40,7 +46,10 @@ const getSectionLabel = (section, labels, t) => {
   if (labels && labels[section]) {
     return labels[section];
   }
-  return t(section.charAt(0).toUpperCase() + section.slice(1));
+  const label =
+    DEFAULT_SECTION_LABELS[section] ||
+    section.charAt(0).toUpperCase() + section.slice(1);
+  return t(label);
 };
 
 const getDisplayValue = (item, t) => {

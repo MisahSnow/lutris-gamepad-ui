@@ -18,8 +18,8 @@ export function playButtonActionSound(currentTime) {
 }
 
 export function playStartupSound() {
-  if (globalThis.__LUTRIS_GAMEPAD_UI_STARTUP_SOUND_PLAYED__) return;
-  globalThis.__LUTRIS_GAMEPAD_UI_STARTUP_SOUND_PLAYED__ = true;
+  if (globalThis.__LUTRIS_BIGSCREEN_STARTUP_SOUND_PLAYED__) return;
+  globalThis.__LUTRIS_BIGSCREEN_STARTUP_SOUND_PLAYED__ = true;
   playButtonActionSound();
 }
 

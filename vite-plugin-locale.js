@@ -74,7 +74,9 @@ export function createLocalePlugins() {
       { trailingNewline: true },
     );
 
-    const shouldCleanup = process.env.LUTRIS_GAMEPAD_UI_LOCALE_CLEANUP === "1";
+    const shouldCleanup =
+      process.env.LUTRIS_BIGSCREEN_LOCALE_CLEANUP === "1" ||
+      process.env.LUTRIS_GAMEPAD_UI_LOCALE_CLEANUP === "1";
 
     const localeDir = path.dirname(pluginState.masterLocaleFile);
 

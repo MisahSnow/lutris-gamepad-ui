@@ -11,8 +11,8 @@ const electronLanguages = localeFiles
 electronLanguages.push("en-US");
 
 module.exports = {
-  appId: "com.electron.${name}",
-  productName: "lutris gamepad ui",
+  appId: "io.github.andrew_ld.lutris_bigscreen",
+  productName: "Lutris Bigscreen",
   electronLanguages: electronLanguages,
   beforeBuild: path.join(__dirname, "electron-builder.beforebuild.cjs"),
   afterPack: path.join(__dirname, "electron-builder.afterpack.cjs"),
@@ -40,7 +40,7 @@ module.exports = {
     target: "AppImage",
     category: "Game",
     synopsis:
-      "A simple, TV-friendly, gamepad-navigable frontend for the Lutris game launcher on Linux.",
+      "Lutris Bigscreen is a TV-friendly, gamepad-navigable frontend for the Lutris game launcher on Linux.",
     icon: "src_frontend/resources/icon.svg",
   },
 };

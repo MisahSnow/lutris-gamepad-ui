@@ -82,7 +82,7 @@ const TopBar = () => {
           </span>
           <span className="top-bar-brand-copy">
             <strong>LUTRIS</strong>
-            <small>GAMEPAD UI</small>
+            <small>BIGSCREEN</small>
           </span>
         </div>
 

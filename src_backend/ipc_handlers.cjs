@@ -17,6 +17,7 @@ const {
 const { listDirectory } = require("./file_manager.cjs");
 const {
   getGames,
+  getGameHeroImage,
   launchGame,
   closeRunningGameProcess,
   toggleGamePause,
@@ -75,6 +76,15 @@ const ipcOnWithError = (channel, listener) => {
 function registerIpcHandlers() {
   ipcHandleWithError("get-games", async () => {
     return await getGames();
+  });
+
+  ipcHandleWithError("get-game-hero-image", async (_event, gameId) => {
+    if (typeof gameId !== "number" || !Number.isInteger(gameId) || gameId < 0) {
+      throw new Error(
+        `Invalid gameId: ${gameId}. Must be a non-negative integer.`,
+      );
+    }
+    return await getGameHeroImage(gameId);
   });
 
   ipcOnWithError("toggle-game-pause", async () => {

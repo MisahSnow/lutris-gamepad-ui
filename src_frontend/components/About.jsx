@@ -91,7 +91,7 @@ const About = ({ onClose }) => {
 
   return (
     <DialogLayout
-      title="Lutris Gamepad UI"
+      title="Lutris Bigscreen"
       description={packageJson.description}
       legendItems={legendItems}
       className="wide"

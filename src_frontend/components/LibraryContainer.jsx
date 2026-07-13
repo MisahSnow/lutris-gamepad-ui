@@ -12,6 +12,8 @@ import { useUI } from "../stores/uiStore";
 import { formatDate, formatPlaytime } from "../utils/datetime";
 import {
   encodeAppProtocolPath,
+  getGameHeroImage,
+  logWarn,
   toggleWindowShow,
   toggleGamePause,
 } from "../utils/ipc";
@@ -66,6 +68,40 @@ const LibraryContainer = () => {
 
   const [focusedGame, setFocusedGame] = useState(null);
   const featuredGame = focusedGame || activeShelf?.games?.[0] || null;
+  const featuredGameId = featuredGame?.id;
+  const [heroImagePaths, setHeroImagePaths] = useState(() => new Map());
+  const heroImagePath = heroImagePaths.get(featuredGameId) || null;
+
+  useEffect(() => {
+    if (
+      featuredGameId === null ||
+      featuredGameId === undefined ||
+      heroImagePaths.has(featuredGameId)
+    ) {
+      return;
+    }
+
+    let isActive = true;
+
+    const timeoutId = setTimeout(() => {
+      getGameHeroImage(featuredGameId)
+        .then((imagePath) => {
+          if (isActive) {
+            setHeroImagePaths((currentPaths) => {
+              const nextPaths = new Map(currentPaths);
+              nextPaths.set(featuredGameId, imagePath || null);
+              return nextPaths;
+            });
+          }
+        })
+        .catch((error) => logWarn("Unable to load hero image", error));
+    }, 300);
+
+    return () => {
+      isActive = false;
+      clearTimeout(timeoutId);
+    };
+  }, [featuredGameId, heroImagePaths]);
 
   const showSearchModalCallback = useCallback(() => {
     showModal((hideThisModal) => (
@@ -290,11 +326,10 @@ const LibraryContainer = () => {
   );
 
   const renderHeader = useCallback(() => {
-    const backgroundStyle = featuredGame?.coverPath
+    const backgroundPath = heroImagePath || featuredGame?.coverPath;
+    const backgroundStyle = backgroundPath
       ? {
-          backgroundImage: `url("${encodeAppProtocolPath(
-            featuredGame.coverPath,
-          )}")`,
+          backgroundImage: `url("${encodeAppProtocolPath(backgroundPath)}")`,
         }
       : undefined;
 
@@ -353,6 +388,7 @@ const LibraryContainer = () => {
   }, [
     activeShelf,
     featuredGame,
+    heroImagePath,
     normalizedActiveShelfIndex,
     searchQuery,
     selectShelfCallback,

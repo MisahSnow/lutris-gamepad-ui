@@ -2,6 +2,7 @@ const { spawn } = require("node:child_process");
 const { readFileSync } = require("node:fs");
 
 const { getAppConfig } = require("./config_manager.cjs");
+const { getHeroImageForGame } = require("./game_media_manager.cjs");
 const { getLutrisGames, syncLutrisAccount } = require("./lutris_wrapper.cjs");
 const {
   getMainWindow,
@@ -90,6 +91,7 @@ function closeRunningGameProcess() {
 }
 
 let __firstAccountSyncPromise = null;
+const knownGames = new Map();
 
 function startFirstAccountSync() {
   if (__firstAccountSyncPromise) {
@@ -125,6 +127,11 @@ async function getGames() {
     g.id = Number.parseInt(g.id);
   }
 
+  knownGames.clear();
+  for (const game of games) {
+    knownGames.set(game.id, game);
+  }
+
   for (const game of games) {
     if (game.runtimeIconPath) {
       addWhitelistedFile(game.runtimeIconPath);
@@ -142,6 +149,35 @@ async function getGames() {
   }
 
   return games;
+}
+
+function getTrustedSteamAppId(game) {
+  if (game.service !== "steam") {
+    return null;
+  }
+
+  const steamAppId = Number.parseInt(
+    game.service_id || game.serviceId || game.steamid,
+  );
+  return Number.isInteger(steamAppId) && steamAppId > 0 ? steamAppId : null;
+}
+
+async function getGameHeroImage(gameId) {
+  const game = knownGames.get(gameId);
+  if (!game) {
+    return null;
+  }
+
+  const heroImagePath = await getHeroImageForGame({
+    title: game.name || game.slug,
+    steamAppId: getTrustedSteamAppId(game),
+  });
+
+  if (heroImagePath) {
+    addWhitelistedFile(heroImagePath);
+  }
+
+  return heroImagePath;
 }
 
 function toggleGamePause(options) {
@@ -276,6 +312,7 @@ function launchGame(gameId) {
 module.exports = {
   startFirstAccountSync,
   getGames,
+  getGameHeroImage,
   launchGame,
   closeRunningGameProcess,
   toggleGamePause,

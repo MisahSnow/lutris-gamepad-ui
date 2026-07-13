@@ -7,8 +7,12 @@ function getLegacyStorageDirectory() {
   return path.join(app.getPath("home"), ".local", "lutris-gamepad-ui");
 }
 
-function getModernStorageDirectory() {
+function getPreviousStorageDirectory() {
   return path.join(app.getPath("appData"), "lutris-gamepad-ui.d");
+}
+
+function getModernStorageDirectory() {
+  return path.join(app.getPath("appData"), "lutris-bigscreen.d");
 }
 
 function migrateLegacyDirectory(modernDirectory, legacyDirectory) {
@@ -52,8 +56,10 @@ function deleteLegacyJunkChromiumSessionFiles() {
 
 function migrateAndGetHomeDirectory() {
   const modernDirectory = getModernStorageDirectory();
+  const previousDirectory = getPreviousStorageDirectory();
   const legacyDirectory = getLegacyStorageDirectory();
 
+  migrateLegacyDirectory(modernDirectory, previousDirectory);
   migrateLegacyDirectory(modernDirectory, legacyDirectory);
   deleteLegacyJunkChromiumSessionFiles();
 

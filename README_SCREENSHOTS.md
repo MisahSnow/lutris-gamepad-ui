@@ -1,6 +1,6 @@
 # Application Screenshots
 
-Here are some screenshots showcasing the Lutris Gamepad UI in action.
+Here are some screenshots showcasing Lutris Bigscreen in action.
 
 ---
 

@@ -154,6 +154,7 @@
 
 .library-hero-copy h1 {
   max-width: 100%;
+  min-height: 1.92em;
   margin: 0;
   color: var(--text-primary);
   font-size: clamp(2.6rem, 4.8vw, 5.25rem);

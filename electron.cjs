@@ -18,7 +18,7 @@ const {
 } = require("./src_backend/utils.cjs");
 const { createWindow } = require("./src_backend/window_manager.cjs");
 
-app.setPath("userData", path.join(app.getPath("cache"), "lutris-gamepad-ui.d"));
+app.setPath("userData", path.join(app.getPath("cache"), "lutris-bigscreen.d"));
 
 if (!app.requestSingleInstanceLock()) {
   app.quit();
@@ -99,7 +99,7 @@ if (!forceWindowed && !isDev) {
 app
   .whenReady()
   .then(() => {
-    app.setName("lutris-gamepad-ui");
+    app.setName("Lutris Bigscreen");
 
     try {
       registerIpcHandlers();

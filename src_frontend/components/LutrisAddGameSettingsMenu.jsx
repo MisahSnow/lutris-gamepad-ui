@@ -117,10 +117,10 @@ const LutrisAddGameSettingsMenu = ({
 
   const sectionLabels = useMemo(
     () => ({
-      info: t("Info"),
-      game: t("Game"),
-      runner: t("Runner"),
-      system: t("System"),
+      info: t("Game info"),
+      game: t("Game options"),
+      runner: t("Runner options"),
+      system: t("System options"),
     }),
     [t],
   );

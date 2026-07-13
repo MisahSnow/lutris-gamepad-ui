@@ -1,6 +1,8 @@
 import { deserializeGamepads } from "./sdl_gamepad_deserialize";
 
 export const getGames = () => globalThis.electronAPI.getGames();
+export const getGameHeroImage = (gameId) =>
+  globalThis.electronAPI.getGameHeroImage(gameId);
 export const launchGame = (game) => globalThis.electronAPI.launchGame(game.id);
 export const closeGame = (game) => globalThis.electronAPI.closeGame(game.id);
 export const listRunningUserApps = () =>

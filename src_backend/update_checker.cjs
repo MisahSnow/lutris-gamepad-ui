@@ -7,6 +7,7 @@ const REPO_OWNER = "andrew-ld";
 const REPO_NAME = "lutris-gamepad-ui";
 const GITHUB_API_URL = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/latest`;
 const IS_UPDATE_CHECKER_DISABLED =
+  process.env.LUTRIS_BIGSCREEN_DISABLE_UPDATE_CHECKER === "1" ||
   process.env.LUTRIS_GAMEPAD_UI_DISABLE_UPDATE_CHECKER === "1";
 
 async function checkForUpdates() {
