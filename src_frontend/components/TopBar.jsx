@@ -30,25 +30,24 @@ const AudioIndicator = () => {
   );
 };
 
+const formatClockTime = (date) => {
+  const hours = date.getHours();
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const period = hours >= 12 ? "PM" : "AM";
+  return `${hours % 12 || 12}:${minutes} ${period}`;
+};
+
 const TopBar = () => {
   const { t } = useTranslation();
   const { gamepadCount } = useInput();
   const { staticSettings } = useStaticSettings();
 
   const [isOnline, setIsOnline] = useState(navigator.onLine);
-  const [time, setTime] = useState(() => {
-    const now = new Date();
-    const hours = String(now.getHours()).padStart(2, "0");
-    const minutes = String(now.getMinutes()).padStart(2, "0");
-    return `${hours}:${minutes}`;
-  });
+  const [time, setTime] = useState(() => formatClockTime(new Date()));
 
   useEffect(() => {
     const updateClock = () => {
-      const now = new Date();
-      const hours = String(now.getHours()).padStart(2, "0");
-      const minutes = String(now.getMinutes()).padStart(2, "0");
-      setTime(`${hours}:${minutes}`);
+      setTime(formatClockTime(new Date()));
     };
 
     const timerId = setInterval(updateClock, 1000);

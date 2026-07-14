@@ -9,18 +9,25 @@ const {
   startFirstAccountSync,
 } = require("./src_backend/game_manager.cjs");
 const { registerIpcHandlers } = require("./src_backend/ipc_handlers.cjs");
-const { getMainWindow } = require("./src_backend/state.cjs");
 const {
   logInfo,
   logError,
   isDev,
   forceWindowed,
 } = require("./src_backend/utils.cjs");
-const { createWindow } = require("./src_backend/window_manager.cjs");
+const {
+  createWindow,
+  showWindow,
+  toggleWindowShow,
+} = require("./src_backend/window_manager.cjs");
+
+const secondInstanceAction = process.argv.includes("--toggle-window")
+  ? "toggle-window"
+  : "show-window";
 
 app.setPath("userData", path.join(app.getPath("cache"), "lutris-bigscreen.d"));
 
-if (!app.requestSingleInstanceLock()) {
+if (!app.requestSingleInstanceLock({ action: secondInstanceAction })) {
   app.quit();
   return;
 }
@@ -29,13 +36,13 @@ process.on("unhandledRejection", (reason, promise) => {
   logError("Caught a global rejection:", reason, promise);
 });
 
-app.on("second-instance", () => {
-  const mainWindow = getMainWindow();
-  if (mainWindow) {
-    if (mainWindow.isMinimized()) mainWindow.restore();
-    mainWindow.focus();
-    mainWindow.show();
+app.on("second-instance", (_event, _commandLine, _workingDirectory, data) => {
+  if (data?.action === "toggle-window") {
+    toggleWindowShow();
+    return;
   }
+
+  void showWindow();
 });
 
 app.on("window-all-closed", () => {

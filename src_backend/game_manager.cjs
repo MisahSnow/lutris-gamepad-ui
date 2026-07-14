@@ -20,6 +20,7 @@ const {
   getProcessDescendants,
   isProcessPaused,
 } = require("./utils.cjs");
+const { showWindow } = require("./window_manager.cjs");
 
 function findLutrisWrapperChildren(pid) {
   const allSubprocesses = getProcessDescendants(pid, new Set());
@@ -283,7 +284,7 @@ function launchGame(gameId) {
 
     if (mainWindow) {
       mainWindow.webContents.send("game-closed");
-      mainWindow.show();
+      void showWindow();
     }
 
     syncLutrisAccount().catch((error) => {

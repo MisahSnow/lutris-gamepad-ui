@@ -14,7 +14,6 @@ import {
   encodeAppProtocolPath,
   getGameHeroImage,
   logWarn,
-  toggleWindowShow,
   toggleGamePause,
 } from "../utils/ipc";
 
@@ -255,17 +254,6 @@ const LibraryContainer = () => {
     LibraryContainerFocusID,
     !!runningGame && !isModalOpen,
   );
-
-  useGlobalShortcut([
-    {
-      key: "Super",
-      active: true,
-      action: useCallback(() => {
-        playActionSound();
-        toggleWindowShow();
-      }, [playActionSound]),
-    },
-  ]);
 
   const openSystemMenu = useCallback(() => {
     toggleSystemMenu();

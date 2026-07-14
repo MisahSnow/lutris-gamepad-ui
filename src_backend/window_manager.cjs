@@ -1,5 +1,7 @@
+const { execFile } = require("node:child_process");
 const path = require("node:path");
 const url = require("node:url");
+const { promisify } = require("node:util");
 
 const {
   BrowserWindow,
@@ -30,6 +32,7 @@ const { checkForUpdates } = require("./update_checker.cjs");
 const {
   isDev,
   forceWindowed,
+  overlayMode,
   getElectronPreloadPath,
   logError,
   logWarn,
@@ -38,6 +41,144 @@ const {
   isRunningInsideGamescope,
 } = require("./utils.cjs");
 const { x11gamescopeToggleFocus } = require("./x11_manager.cjs");
+
+const execFilePromise = promisify(execFile);
+let coveredFullscreenWindow = null;
+
+const wait = (milliseconds) =>
+  new Promise((resolve) => setTimeout(resolve, milliseconds));
+
+async function captureCoveredFullscreenWindow() {
+  coveredFullscreenWindow = null;
+
+  if (!overlayMode || process.env.XDG_CURRENT_DESKTOP !== "Hyprland") {
+    return;
+  }
+
+  try {
+    const { stdout } = await execFilePromise("hyprctl", ["activewindow", "-j"]);
+    const activeWindow = JSON.parse(stdout);
+    const address = String(activeWindow.address || "");
+    const internal = Number(activeWindow.fullscreen || 0);
+    const client = Number(activeWindow.fullscreenClient || 0);
+
+    if (
+      /^0x[\da-f]+$/i.test(address) &&
+      Number.isInteger(internal) &&
+      Number.isInteger(client) &&
+      (internal > 0 || client > 0)
+    ) {
+      coveredFullscreenWindow = { address, internal, client };
+    }
+  } catch (error) {
+    logWarn("Unable to capture the covered fullscreen window", error);
+  }
+}
+
+async function restoreCoveredFullscreenWindow(clearAfterRestore = false) {
+  const coveredWindow = coveredFullscreenWindow;
+  if (!coveredWindow) return;
+
+  try {
+    const command =
+      "hl.dsp.window.fullscreen_state({ " +
+      `internal = ${coveredWindow.internal}, ` +
+      `client = ${coveredWindow.client}, ` +
+      'action = "set", ' +
+      `window = "address:${coveredWindow.address}" })`;
+    await execFilePromise("hyprctl", ["dispatch", command]);
+  } catch (error) {
+    logWarn("Unable to restore the covered fullscreen window", error);
+  } finally {
+    if (clearAfterRestore) coveredFullscreenWindow = null;
+  }
+}
+
+async function getHyprlandOverlayClient() {
+  const { stdout } = await execFilePromise("hyprctl", ["clients", "-j"]);
+  const clients = JSON.parse(stdout);
+  return clients.find((client) => client.title === "Lutris Bigscreen") || null;
+}
+
+async function isOverlayFocused(mainWindow) {
+  if (!overlayMode || process.env.XDG_CURRENT_DESKTOP !== "Hyprland") {
+    return mainWindow.isFocused();
+  }
+
+  try {
+    const { stdout } = await execFilePromise("hyprctl", ["activewindow", "-j"]);
+    const activeWindow = JSON.parse(stdout);
+    return activeWindow.title === "Lutris Bigscreen";
+  } catch (error) {
+    logWarn("Unable to determine whether Lutris Bigscreen is focused", error);
+    return mainWindow.isFocused();
+  }
+}
+
+async function raiseHyprlandOverlay({ focus = true } = {}) {
+  if (!overlayMode || process.env.XDG_CURRENT_DESKTOP !== "Hyprland") {
+    return;
+  }
+
+  try {
+    let overlayClient = null;
+    for (let attempt = 0; attempt < 10 && !overlayClient; attempt += 1) {
+      overlayClient = await getHyprlandOverlayClient();
+      if (!overlayClient) await wait(50);
+    }
+    if (!overlayClient) return;
+
+    const address = String(overlayClient.address || "");
+    if (!/^0x[\da-f]+$/i.test(address)) return;
+
+    const selector = `address:${address}`;
+    const { stdout } = await execFilePromise("hyprctl", [
+      "activeworkspace",
+      "-j",
+    ]);
+    const activeWorkspace = JSON.parse(stdout);
+    const workspaceName = String(activeWorkspace.name || "");
+    const overlayWorkspace = String(overlayClient.workspace?.name || "");
+
+    if (workspaceName && workspaceName !== overlayWorkspace) {
+      const workspace = /^\d+$/.test(workspaceName)
+        ? workspaceName
+        : JSON.stringify(workspaceName);
+      await execFilePromise("hyprctl", [
+        "dispatch",
+        `hl.dsp.window.move({ workspace = ${workspace}, window = "${selector}" })`,
+      ]);
+    }
+
+    await execFilePromise("hyprctl", [
+      "dispatch",
+      `hl.dsp.window.alter_zorder({ mode = "top", window = "${selector}" })`,
+    ]);
+
+    if (focus) {
+      await execFilePromise("hyprctl", [
+        "dispatch",
+        `hl.dsp.focus({ window = "${selector}" })`,
+      ]);
+    }
+  } catch (error) {
+    logWarn("Unable to raise the Lutris Bigscreen overlay", error);
+  }
+}
+
+async function setWaybarVisible(visible) {
+  if (!overlayMode || process.env.XDG_CURRENT_DESKTOP !== "Hyprland") {
+    return;
+  }
+
+  try {
+    await execFilePromise("pkill", [visible ? "-USR2" : "-USR1", "-x", "waybar"]);
+  } catch (error) {
+    if (error?.code !== 1) {
+      logWarn("Unable to change Waybar visibility", error);
+    }
+  }
+}
 
 function getWindowZoomFactor() {
   return getAppConfig().zoomFactor || 1;
@@ -66,7 +207,7 @@ subscribeConfigValueChange("gamepadAutorepeatMs", (newValue) => {
   sendAltTabDebounced = createSendAltTabDebounced(newValue);
 });
 
-function toggleWindowShow() {
+async function toggleWindowShow() {
   const mainWindow = getMainWindow();
   if (!mainWindow) {
     return;
@@ -92,14 +233,31 @@ function toggleWindowShow() {
 
   logInfo("toggleWindowShow: using fallback");
 
-  if (mainWindow.isMinimized()) {
+  if (mainWindow.isVisible() && (await isOverlayFocused(mainWindow))) {
     mainWindow.hide();
-    mainWindow.restore();
-    mainWindow.show();
-    mainWindow.maximize();
-  } else {
-    mainWindow.minimize();
+    await setWaybarVisible(true);
+    await restoreCoveredFullscreenWindow(true);
+    return;
   }
+
+  await showWindow();
+}
+
+async function showWindow() {
+  const mainWindow = getMainWindow();
+  if (!mainWindow) {
+    return;
+  }
+
+  await captureCoveredFullscreenWindow();
+  if (mainWindow.isMinimized()) mainWindow.restore();
+  await setWaybarVisible(false);
+  mainWindow.show();
+  mainWindow.focus();
+  await wait(150);
+  await raiseHyprlandOverlay();
+  await restoreCoveredFullscreenWindow();
+  await raiseHyprlandOverlay({ focus: false });
 }
 
 function fillSearchParams(searchParams, envPrefix, searchParamPrefix) {
@@ -220,9 +378,10 @@ function createWindow(onWindowClosedCallback) {
     });
   });
 
-  const fullscreen = !forceWindowed && !isDev;
+  const fullscreen = !forceWindowed && !isDev && !overlayMode;
 
   const win = new BrowserWindow({
+    show: !overlayMode,
     fullscreen,
     webPreferences: {
       nodeIntegration: false,
@@ -232,11 +391,11 @@ function createWindow(onWindowClosedCallback) {
       preload: getElectronPreloadPath(),
       autoplayPolicy: "no-user-gesture-required",
     },
-    frame: !fullscreen,
+    frame: !fullscreen && !overlayMode,
     title: "Lutris Bigscreen",
   });
 
-  if (!fullscreen) {
+  if (!fullscreen && !overlayMode) {
     win.setSize(1280, 800);
   }
 
@@ -271,6 +430,8 @@ function createWindow(onWindowClosedCallback) {
   });
 
   win.on("closed", () => {
+    void setWaybarVisible(true);
+    void restoreCoveredFullscreenWindow(true);
     setMainWindow(null);
     if (onWindowClosedCallback) {
       onWindowClosedCallback();
@@ -287,6 +448,19 @@ function createWindow(onWindowClosedCallback) {
     });
   });
 
+  if (overlayMode) {
+    win.once("ready-to-show", async () => {
+      await captureCoveredFullscreenWindow();
+      await setWaybarVisible(false);
+      win.show();
+      win.focus();
+      await wait(150);
+      await raiseHyprlandOverlay();
+      await restoreCoveredFullscreenWindow();
+      await raiseHyprlandOverlay({ focus: false });
+    });
+  }
+
   subscribeConfigValueChange("useRemoteDesktopPortal", (enabled) => {
     if (enabled) {
       startRemoteDesktopSessionDebounced();
@@ -302,5 +476,6 @@ function createWindow(onWindowClosedCallback) {
 
 module.exports = {
   createWindow,
+  showWindow,
   toggleWindowShow,
 };

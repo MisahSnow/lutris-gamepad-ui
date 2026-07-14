@@ -41,6 +41,9 @@ const isDevelopment =
 const forceWindowed =
   process.env.LUTRIS_BIGSCREEN_FORCE_WINDOWED === "1" ||
   process.env.LUTRIS_GAMEPAD_UI_FORCE_WINDOWED === "1";
+const overlayMode =
+  process.env.LUTRIS_BIGSCREEN_OVERLAY === "1" ||
+  process.env.LUTRIS_GAMEPAD_UI_OVERLAY === "1";
 
 function localeAppFile(name) {
   const DIRECTORIES = [
@@ -223,6 +226,7 @@ function getRunExclusive() {
 module.exports = {
   isDev: isDevelopment,
   forceWindowed,
+  overlayMode,
   execPromise,
   spawnGSettings,
   spawnDdcutil,
